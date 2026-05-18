@@ -3,423 +3,506 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Sistema de Rifa — El Gran Sorteo</title>
+<title>Sistema de Rifa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
+/* ── TOKENS ── */
 :root{
-  --gold:#b8860b;
-  --gold2:#d4a017;
-  --gold3:#f5c842;
-  --bg:#f7f4ee;
-  --bg2:#ffffff;
-  --bg3:#fdf9f2;
-  --surface:#f0ebe0;
-  --border:#e0d5c0;
-  --border2:#c8bda0;
-  --text:#2a2010;
+  --gold:#c8990a;
+  --gold-l:#f5c842;
+  --gold-d:#96720a;
+  --bg:#f4f1eb;
+  --card:#ffffff;
+  --card2:#faf8f3;
+  --border:#e2d9c8;
+  --border2:#cec3ae;
+  --txt:#1e1a12;
   --muted:#7a6e58;
-  --avail-bg:#edfaf2;
-  --avail-border:#27ae60;
-  --avail-text:#1a7a43;
-  --ocup-bg:#fef0ee;
-  --ocup-border:#e74c3c;
-  --ocup-text:#b03020;
-  --paid-bg:#eef4fd;
-  --paid-border:#2980b9;
-  --paid-text:#1a5a8a;
-  --canc-bg:#f5f5f3;
-  --canc-border:#aaa;
-  --canc-text:#888;
-  --r:12px;
-  --sh:0 4px 24px rgba(0,0,0,.10);
+  --g-bg:#edfaf2; --g-br:#27ae60; --g-tx:#1a7a43;
+  --a-bg:#fff8e6; --a-br:#e0a500; --a-tx:#7a5a00;
+  --p-bg:#eef5ff; --p-br:#2471c8; --p-tx:#14437a;
+  --c-bg:#f5f4f2; --c-br:#aaa;   --c-tx:#7a7a7a;
+  --r-bg:#fff0ee; --r-br:#e74c3c; --r-tx:#a02020;
+  --sh:0 2px 16px rgba(0,0,0,.08);
+  --sh2:0 6px 30px rgba(0,0,0,.13);
 }
+
+/* ── RESET ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overscroll-behavior:none}
 
-/* BG pattern */
-body::before{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(ellipse 70% 50% at 15% 0%,rgba(184,134,11,.07) 0%,transparent 60%),
-    radial-gradient(ellipse 50% 60% at 85% 100%,rgba(39,174,96,.05) 0%,transparent 60%);
-}
-
-/* ─── HEADER ─── */
+/* ── HEADER ── */
 header{
-  position:relative;z-index:1;
-  background:linear-gradient(135deg,#fff9ee,#fffdf7);
-  border-bottom:2px solid var(--border);
-  text-align:center;padding:44px 20px 32px;
-  box-shadow:0 2px 12px rgba(184,134,11,.08);
+  background:#fff;border-bottom:2px solid var(--border);
+  padding:20px 16px 16px;text-align:center;
+  box-shadow:var(--sh);position:sticky;top:0;z-index:50;
 }
-.crown{font-size:2.2rem;margin-bottom:10px;filter:drop-shadow(0 2px 6px rgba(184,134,11,.3));}
 header h1{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(1.8rem,4.5vw,3rem);font-weight:900;
-  background:linear-gradient(135deg,var(--gold),var(--gold2),#c8960c);
+  font-size:clamp(1.2rem,4.5vw,1.8rem);font-weight:800;
+  background:linear-gradient(135deg,var(--gold-d),var(--gold),#d4a800);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  line-height:1.1;margin-bottom:8px;
+  line-height:1.15;
 }
-header p{color:var(--muted);font-size:.9rem;letter-spacing:.05em;}
+header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em;}
 
-/* ─── TABS ─── */
+/* ── TABS ── */
 .tabs{
-  display:flex;justify-content:center;gap:8px;
-  padding:20px 16px 0;position:relative;z-index:1;
+  display:flex;gap:0;background:#fff;
+  border-bottom:2px solid var(--border);
+  position:sticky;top:70px;z-index:49;
 }
 .tab{
-  background:var(--bg2);border:1.5px solid var(--border2);
-  color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;
-  padding:10px 26px;border-radius:40px;cursor:pointer;transition:all .2s;
+  flex:1;padding:13px 8px;border:none;background:transparent;
+  font-family:'Sora',sans-serif;font-size:.82rem;font-weight:600;
+  color:var(--muted);cursor:pointer;
+  border-bottom:3px solid transparent;transition:all .18s;
+  display:flex;align-items:center;justify-content:center;gap:7px;
 }
-.tab:hover{border-color:var(--gold);color:var(--gold);}
-.tab.active{
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  border-color:transparent;color:#fff;font-weight:600;
-  box-shadow:0 3px 14px rgba(184,134,11,.25);
-}
+.tab svg{width:16px;height:16px;flex-shrink:0;}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.tab:hover:not(.active){color:var(--txt);}
 
-/* ─── PANELS ─── */
-.panel{display:none;position:relative;z-index:1;padding:28px 16px 60px;max-width:1100px;margin:0 auto;}
+/* ── PANELS ── */
+.panel{display:none;padding:16px;max-width:700px;margin:0 auto;padding-bottom:80px;}
 .panel.active{display:block;}
 
-/* ─── STATS ─── */
-.stats{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:26px;}
+/* ── STATS ── */
+.stats{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
+  margin-bottom:16px;
+}
 .stat{
-  background:var(--bg2);border:1.5px solid var(--border);
-  border-radius:12px;padding:12px 20px;text-align:center;min-width:100px;
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:10px;padding:10px 4px;text-align:center;
   box-shadow:var(--sh);
 }
-.stat-n{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;}
-.stat-l{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:2px;}
-.stat-n.green{color:var(--avail-text);}
-.stat-n.red{color:var(--ocup-text);}
-.stat-n.blue{color:var(--paid-text);}
-.stat-n.grey{color:var(--canc-text);}
-.stat-n.gold{color:var(--gold);}
+.stat-n{font-size:1.3rem;font-weight:800;}
+.stat-l{font-size:.58rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-top:1px;}
+.stat-n.g{color:var(--g-tx)}.stat-n.a{color:var(--a-tx)}.stat-n.p{color:var(--p-tx)}
+.stat-n.c{color:var(--c-tx)}.stat-n.gold{color:var(--gold)}
 
-/* ─── LEGEND ─── */
-.legend{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:20px;}
-.leg{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--muted);}
-.leg-dot{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
-
-/* ─── SEARCH ─── */
-.search-wrap{display:flex;gap:8px;max-width:380px;margin:0 auto 24px;}
-.search-wrap input{
-  flex:1;background:var(--bg2);border:1.5px solid var(--border);
-  color:var(--text);border-radius:10px;padding:11px 14px;font-size:.9rem;
-  font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;
+/* ── LEGEND ── */
+.legend{
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+  margin-bottom:14px;
 }
-.search-wrap input:focus{border-color:var(--gold);}
-.search-wrap button{
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  border:none;border-radius:10px;color:#fff;
-  font-weight:600;font-size:.85rem;padding:11px 18px;cursor:pointer;font-family:'DM Sans',sans-serif;
+.leg{display:flex;align-items:center;gap:5px;font-size:.72rem;color:var(--muted);}
+.leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+
+/* ── SEARCH ── */
+.search-row{display:flex;gap:8px;margin-bottom:16px;}
+.search-row input{
+  flex:1;background:var(--card);border:1.5px solid var(--border);
+  color:var(--txt);border-radius:9px;padding:11px 13px;
+  font-size:.88rem;font-family:'Sora',sans-serif;outline:none;transition:border-color .18s;
+}
+.search-row input:focus{border-color:var(--gold);}
+.search-row button{
+  background:var(--gold);border:none;border-radius:9px;color:#fff;
+  font-family:'Sora',sans-serif;font-weight:600;font-size:.82rem;
+  padding:11px 16px;cursor:pointer;white-space:nowrap;
 }
 
-/* ─── GRID ─── */
-#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:7px;}
+/* ── GRID ── */
+#grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(64px,1fr));
+  gap:6px;
+}
+@media(max-width:380px){#grid{grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:5px;}}
+
 .ticket{
-  aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  border-radius:10px;border:1.5px solid;
-  font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;
-  cursor:pointer;transition:transform .13s,box-shadow .13s;
-  position:relative;overflow:hidden;user-select:none;
+  aspect-ratio:1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-radius:9px;border:1.5px solid;
+  font-family:'Sora',sans-serif;font-size:.95rem;font-weight:700;
+  cursor:pointer;user-select:none;
+  transition:transform .12s,box-shadow .12s;
+  -webkit-tap-highlight-color:transparent;
+  position:relative;
 }
-.ticket::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,.45) 0%,transparent 55%);
-  pointer-events:none;
-}
-.ticket:hover{transform:scale(1.07);z-index:2;}
-.ticket.DISPONIBLE{background:var(--avail-bg);border-color:var(--avail-border);color:var(--avail-text);}
-.ticket.DISPONIBLE:hover{box-shadow:0 0 14px rgba(39,174,96,.35);}
-.ticket.OCUPADO{background:var(--ocup-bg);border-color:var(--ocup-border);color:var(--ocup-text);cursor:not-allowed;}
-.ticket.PAGADO{background:var(--paid-bg);border-color:var(--paid-border);color:var(--paid-text);cursor:default;}
-.ticket.CANCELADO{background:var(--canc-bg);border-color:var(--canc-border);color:var(--canc-text);cursor:default;opacity:.55;}
-.ticket-badge{font-size:.44rem;letter-spacing:.06em;text-transform:uppercase;font-family:'DM Sans',sans-serif;font-weight:600;margin-top:2px;opacity:.7;}
+.ticket:active{transform:scale(.93);}
+.ticket-badge{font-size:.42rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-top:2px;opacity:.75;}
 
-/* ─── MODAL OVERLAY ─── */
+.ticket.DISPONIBLE{background:var(--g-bg);border-color:var(--g-br);color:var(--g-tx);}
+.ticket.DISPONIBLE:hover{box-shadow:0 0 0 3px rgba(39,174,96,.25);}
+.ticket.APARTADO{background:var(--a-bg);border-color:var(--a-br);color:var(--a-tx);cursor:default;}
+.ticket.PAGADO{background:var(--p-bg);border-color:var(--p-br);color:var(--p-tx);cursor:default;}
+.ticket.CANCELADO{background:var(--c-bg);border-color:var(--c-br);color:var(--c-tx);cursor:default;opacity:.55;}
+
+/* ── OVERLAY ── */
 .overlay{
-  position:fixed;inset:0;background:rgba(42,32,16,.45);
-  backdrop-filter:blur(5px);
-  display:flex;align-items:center;justify-content:center;
-  z-index:100;opacity:0;pointer-events:none;
-  transition:opacity .2s;padding:16px;
+  position:fixed;inset:0;background:rgba(20,16,8,.55);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  display:flex;align-items:flex-end;justify-content:center;
+  z-index:200;opacity:0;pointer-events:none;
+  transition:opacity .2s;
 }
+@media(min-width:480px){.overlay{align-items:center;}}
 .overlay.open{opacity:1;pointer-events:all;}
 
-/* ─── MODAL ─── */
+/* ── MODAL ── */
 .modal{
-  background:var(--bg2);border:1.5px solid var(--border);
-  border-radius:18px;width:100%;max-width:430px;
-  box-shadow:0 12px 50px rgba(0,0,0,.18);
-  transform:translateY(20px) scale(.97);
-  transition:transform .24s cubic-bezier(.34,1.56,.64,1);
-  overflow:hidden;
+  background:var(--card);width:100%;max-width:440px;
+  border-radius:20px 20px 0 0;
+  box-shadow:var(--sh2);
+  transform:translateY(100%);
+  transition:transform .28s cubic-bezier(.32,1,.44,1);
+  overflow:hidden;max-height:92vh;overflow-y:auto;
 }
+@media(min-width:480px){.modal{border-radius:18px;transform:translateY(20px) scale(.97);max-height:85vh;}}
 .overlay.open .modal{transform:none;}
 
-.modal-header{
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  padding:20px 22px 16px;display:flex;align-items:center;gap:12px;
+.modal-handle{
+  width:40px;height:4px;background:var(--border2);border-radius:4px;
+  margin:10px auto 0;
 }
-.modal-header .icon{font-size:1.5rem;}
-.modal-header h2{font-family:'Playfair Display',serif;font-size:1.25rem;color:#fff;font-weight:900;}
-.modal-header p{font-size:.76rem;color:rgba(255,255,255,.75);margin-top:2px;}
+@media(min-width:480px){.modal-handle{display:none;}}
 
-.modal-body{padding:22px;}
+.modal-head{
+  background:linear-gradient(135deg,var(--gold-d),var(--gold));
+  padding:18px 20px 14px;
+}
+.modal-head-row{display:flex;align-items:center;gap:10px;}
+.modal-head svg{width:22px;height:22px;flex-shrink:0;color:#fff;}
+.modal-head h2{font-size:1.1rem;font-weight:800;color:#fff;}
+.modal-head p{font-size:.74rem;color:rgba(255,255,255,.78);margin-top:2px;}
+.modal-close{
+  margin-left:auto;background:rgba(255,255,255,.2);border:none;
+  border-radius:7px;padding:4px 8px;color:#fff;cursor:pointer;
+  font-family:'Sora',sans-serif;font-size:.75rem;font-weight:600;
+}
+
+.modal-body{padding:20px;}
 
 /* confirm */
-.confirm-q{font-size:.95rem;color:var(--text);text-align:center;margin-bottom:22px;line-height:1.55;}
-.confirm-q span{color:var(--gold);font-weight:700;}
-.btn-row{display:flex;gap:10px;}
-.btn{
-  flex:1;padding:12px 8px;border-radius:9px;border:none;
-  font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .18s;
+.confirm-q{
+  font-size:.9rem;text-align:center;line-height:1.6;
+  margin-bottom:20px;color:var(--txt);
 }
-.btn-yes{background:var(--surface);border:1.5px solid var(--border2);color:var(--muted);}
-.btn-yes:hover{background:var(--canc-bg);border-color:var(--canc-border);}
-.btn-no{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff;box-shadow:0 3px 12px rgba(184,134,11,.25);}
-.btn-no:hover{filter:brightness(1.08);}
+.confirm-q strong{color:var(--gold);font-size:1.05rem;}
+.two-btn{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0;}
 
 /* form */
-.field{margin-bottom:14px;}
-.field label{display:block;font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;font-weight:600;}
+.field{margin-bottom:13px;}
+.field label{
+  display:block;font-size:.7rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;
+}
 .field input{
-  width:100%;background:var(--bg3);border:1.5px solid var(--border);
-  color:var(--text);border-radius:9px;padding:11px 13px;font-size:.9rem;
-  font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;
+  width:100%;background:var(--card2);border:1.5px solid var(--border);
+  color:var(--txt);border-radius:8px;padding:11px 12px;
+  font-size:.9rem;font-family:'Sora',sans-serif;outline:none;transition:border-color .18s;
 }
 .field input:focus{border-color:var(--gold);}
-.field input[type=file]{padding:7px 13px;cursor:pointer;}
-.file-hint{font-size:.7rem;color:var(--muted);margin-top:4px;}
-.submit-btn{
+.field input[type=file]{padding:8px 12px;cursor:pointer;font-size:.82rem;}
+.file-note{font-size:.67rem;color:var(--muted);margin-top:4px;}
+
+/* generic buttons */
+.btn{
   width:100%;padding:13px;border-radius:9px;border:none;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  color:#fff;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.92rem;
-  cursor:pointer;transition:all .18s;margin-top:2px;
+  font-family:'Sora',sans-serif;font-size:.88rem;font-weight:700;
+  cursor:pointer;transition:all .15s;margin-top:0;
+  display:flex;align-items:center;justify-content:center;gap:8px;
 }
-.submit-btn:hover{filter:brightness(1.08);box-shadow:0 4px 16px rgba(184,134,11,.3);}
-.submit-btn:disabled{opacity:.5;cursor:not-allowed;}
+.btn svg{width:17px;height:17px;flex-shrink:0;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.btn-gold{background:linear-gradient(135deg,var(--gold-d),var(--gold));color:#fff;}
+.btn-gold:hover:not(:disabled){filter:brightness(1.08);}
+.btn-outline{background:var(--card2);border:1.5px solid var(--border2);color:var(--muted);}
+.btn-outline:hover:not(:disabled){border-color:var(--gold);color:var(--gold);}
+.btn-green{background:#27ae60;color:#fff;}
+.btn-red{background:var(--r-bg);border:1.5px solid var(--r-br);color:var(--r-tx);}
 
-/* success / cancelled views */
-.success-view{text-align:center;padding:6px 0;}
-.icon-circle{
-  width:88px;height:88px;margin:0 auto 14px;
-  border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:2.5rem;animation:pop .4s cubic-bezier(.34,1.56,.64,1) both;
+/* action buttons in confirm */
+.action-btn{
+  padding:13px 6px;border-radius:9px;border:none;
+  font-family:'Sora',sans-serif;font-size:.82rem;font-weight:700;
+  cursor:pointer;transition:all .15s;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  line-height:1.3;
 }
-@keyframes pop{from{transform:scale(0);}to{transform:scale(1);}}
-.icon-circle.gold{background:linear-gradient(135deg,#fff3cc,#ffe080);box-shadow:0 0 30px rgba(184,134,11,.25);}
-.icon-circle.green{background:linear-gradient(135deg,#e8faf0,#c0f0d8);box-shadow:0 0 30px rgba(39,174,96,.2);}
+.action-btn svg{width:22px;height:22px;}
+.action-btn.apartar{background:var(--a-bg);border:1.5px solid var(--a-br);color:var(--a-tx);}
+.action-btn.pagar{background:var(--p-bg);border:1.5px solid var(--p-br);color:var(--p-tx);}
+.action-btn.cancelar{background:var(--r-bg);border:1.5px solid var(--r-br);color:var(--r-tx);}
 
-/* Imagen de pago */
-.pay-img-wrap{
-  margin:10px auto 16px;
-  width:140px;height:140px;border-radius:14px;overflow:hidden;
-  border:2px solid var(--border);box-shadow:var(--sh);
+/* divider */
+.divider{
+  display:flex;align-items:center;gap:10px;margin:14px 0;
+  font-size:.7rem;color:var(--muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;
 }
-.pay-img-wrap img{width:100%;height:100%;object-fit:cover;}
-.pay-img-wrap a{display:block;width:100%;height:100%;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
 
-.success-view h3{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--gold);margin-bottom:7px;}
-.success-view p{color:var(--muted);font-size:.86rem;line-height:1.6;}
-.close-btn{
-  margin-top:18px;width:100%;padding:11px;border-radius:9px;
-  border:1.5px solid var(--border2);background:transparent;
-  color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.86rem;cursor:pointer;transition:all .18s;
+/* success */
+.success-wrap{text-align:center;padding:8px 0;}
+.success-icon{
+  width:72px;height:72px;border-radius:50%;margin:0 auto 14px;
+  display:flex;align-items:center;justify-content:center;
 }
-.close-btn:hover{border-color:var(--gold);color:var(--gold);}
+.success-icon svg{width:36px;height:36px;}
+.success-icon.gold{background:linear-gradient(135deg,#fff3cc,#ffe080);}
+.success-icon.blue{background:linear-gradient(135deg,#ddeeff,#b8d8ff);}
+.success-icon.green{background:linear-gradient(135deg,#ddfae8,#a8f0c4);}
+.success-wrap h3{font-size:1.15rem;font-weight:800;color:var(--txt);margin-bottom:7px;}
+.success-wrap p{font-size:.82rem;color:var(--muted);line-height:1.65;}
 
-/* ─── QUERY PANEL ─── */
-.query-card{
-  background:var(--bg2);border:1.5px solid var(--border);
-  border-radius:16px;padding:26px;max-width:480px;margin:0 auto;
-  box-shadow:var(--sh);
+.pay-img{
+  width:130px;height:130px;border-radius:12px;overflow:hidden;
+  border:1.5px solid var(--border);box-shadow:var(--sh);
+  margin:14px auto;cursor:pointer;display:block;
 }
-.query-card h3{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--gold);margin-bottom:18px;text-align:center;}
-.result-card{
-  background:var(--bg3);border-radius:11px;padding:18px;margin-top:18px;
-  border:1.5px solid var(--border);display:none;
+.pay-img img{width:100%;height:100%;object-fit:cover;display:block;}
+
+/* ── QUERY PANEL ── */
+.q-card{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:14px;padding:20px;box-shadow:var(--sh);
 }
-.result-card.show{display:block;}
-.result-row{
+.q-card h3{font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:16px;text-align:center;}
+.result-box{
+  background:var(--card2);border:1.5px solid var(--border);
+  border-radius:10px;padding:16px;margin-top:14px;display:none;
+}
+.result-box.show{display:block;}
+.rrow{
   display:flex;justify-content:space-between;align-items:center;
-  padding:7px 0;border-bottom:1px solid var(--border);font-size:.86rem;
+  padding:7px 0;border-bottom:1px solid var(--border);font-size:.83rem;
 }
-.result-row:last-child{border-bottom:none;}
-.result-row .key{color:var(--muted);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;}
-.result-row .val{font-weight:600;color:var(--text);}
+.rrow:last-child{border-bottom:none;}
+.rrow .k{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+.rrow .v{font-weight:700;color:var(--txt);}
 .badge{
-  padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:700;
+  padding:3px 9px;border-radius:20px;font-size:.67rem;font-weight:700;
   letter-spacing:.07em;text-transform:uppercase;
 }
-.badge.DISPONIBLE{background:var(--avail-bg);color:var(--avail-text);}
-.badge.OCUPADO{background:var(--ocup-bg);color:var(--ocup-text);}
-.badge.PAGADO{background:var(--paid-bg);color:var(--paid-text);}
-.badge.CANCELADO{background:var(--canc-bg);color:var(--canc-text);}
+.badge.DISPONIBLE{background:var(--g-bg);color:var(--g-tx);}
+.badge.APARTADO{background:var(--a-bg);color:var(--a-tx);}
+.badge.PAGADO{background:var(--p-bg);color:var(--p-tx);}
+.badge.CANCELADO{background:var(--c-bg);color:var(--c-tx);}
 
-.upload-section{
-  margin-top:14px;background:#fffdf5;border-radius:10px;
-  padding:14px;border:1.5px dashed var(--gold2);
+.upload-box{
+  margin-top:12px;background:#fffdf5;
+  border:1.5px dashed var(--gold);border-radius:10px;padding:14px;
 }
-.upload-section p{font-size:.8rem;color:var(--muted);margin-bottom:10px;}
+.upload-box p{font-size:.78rem;color:var(--muted);margin-bottom:10px;}
 
-/* ─── TOAST ─── */
-.toast{
-  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);
-  background:var(--bg2);border:1.5px solid var(--border2);
-  border-radius:12px;padding:13px 22px;font-size:.86rem;color:var(--text);
-  box-shadow:0 6px 24px rgba(0,0,0,.13);z-index:200;
-  transition:transform .28s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;
+/* ── TOAST ── */
+#toast{
+  position:fixed;bottom:20px;left:50%;
+  transform:translateX(-50%) translateY(90px);
+  background:var(--card);border:1.5px solid var(--border2);
+  border-radius:10px;padding:12px 20px;
+  font-size:.83rem;font-weight:600;color:var(--txt);
+  box-shadow:var(--sh2);z-index:999;
+  transition:transform .26s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;max-width:90vw;text-align:center;
 }
-.toast.show{transform:translateX(-50%) translateY(0);}
-.toast.success{border-color:var(--avail-border);color:var(--avail-text);}
-.toast.error{border-color:var(--ocup-border);color:var(--ocup-text);}
+#toast.show{transform:translateX(-50%) translateY(0);}
+#toast.ok{border-color:var(--g-br);color:var(--g-tx);}
+#toast.err{border-color:var(--r-br);color:var(--r-tx);}
 
-/* ─── LOADER ─── */
-.loader{text-align:center;padding:50px;color:var(--muted);}
-.spinner{
-  width:36px;height:36px;margin:0 auto 14px;
+/* ── LOADER ── */
+.loader{text-align:center;padding:48px 16px;color:var(--muted);}
+.spin{
+  width:32px;height:32px;margin:0 auto 12px;
   border:3px solid var(--border);border-top-color:var(--gold);
-  border-radius:50%;animation:spin .8s linear infinite;
+  border-radius:50%;animation:sp .75s linear infinite;
 }
-@keyframes spin{to{transform:rotate(360deg)}}
-
-@media(max-width:480px){
-  #grid{grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:5px;}
-  .ticket{font-size:.88rem;}
-  .btn-row{flex-direction:column;}
-}
+@keyframes sp{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="crown">👑</div>
   <h1>El Gran Sorteo</h1>
-  <p>Sistema Oficial de Gestión de Rifas</p>
+  <p>Sistema oficial de gestión de rifas</p>
 </header>
 
 <div class="tabs">
-  <button class="tab active" onclick="switchTab('grid-panel',this)">🎟️ Tablero</button>
-  <button class="tab" onclick="switchTab('query-panel',this)">🔍 Consultar Número</button>
+  <button class="tab active" onclick="switchTab('panel-grid',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    Tablero
+  </button>
+  <button class="tab" onclick="switchTab('panel-query',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    Consultar
+  </button>
 </div>
 
-<!-- ── GRID PANEL ── -->
-<div id="grid-panel" class="panel active">
-  <div class="stats" id="stats"></div>
+<!-- ═══ TABLERO ═══ -->
+<div class="panel active" id="panel-grid">
+  <div class="stats" id="stats" style="margin-top:14px;"></div>
+
   <div class="legend">
-    <div class="leg"><div class="leg-dot" style="background:#27ae60"></div>Disponible</div>
-    <div class="leg"><div class="leg-dot" style="background:#e74c3c"></div>Ocupado</div>
-    <div class="leg"><div class="leg-dot" style="background:#2980b9"></div>Pagado</div>
-    <div class="leg"><div class="leg-dot" style="background:#aaa"></div>Cancelado</div>
+    <div class="leg"><div class="leg-dot" style="background:var(--g-br)"></div>Disponible</div>
+    <div class="leg"><div class="leg-dot" style="background:var(--a-br)"></div>Apartado</div>
+    <div class="leg"><div class="leg-dot" style="background:var(--p-br)"></div>Pagado</div>
+    <div class="leg"><div class="leg-dot" style="background:var(--c-br)"></div>Cancelado</div>
   </div>
-  <div class="search-wrap">
-    <input type="number" id="searchNum" placeholder="Buscar número…" min="1"/>
-    <button onclick="highlightTicket()">Buscar</button>
+
+  <div class="search-row">
+    <input type="number" id="sNum" placeholder="Buscar número…" inputmode="numeric"/>
+    <button onclick="highlight()">Buscar</button>
   </div>
+
   <div id="grid">
-    <div class="loader"><div class="spinner"></div>Cargando tickets…</div>
+    <div class="loader"><div class="spin"></div>Cargando…</div>
   </div>
 </div>
 
-<!-- ── QUERY PANEL ── -->
-<div id="query-panel" class="panel">
-  <div class="query-card">
-    <h3>🔍 Consultar mi Número</h3>
+<!-- ═══ CONSULTAR ═══ -->
+<div class="panel" id="panel-query">
+  <div class="q-card" style="margin-top:14px;">
+    <h3>Consultar mi Número</h3>
     <div class="field">
       <label>Número de Rifa</label>
-      <input type="number" id="queryNum" placeholder="Ej: 42" min="1"/>
+      <input type="number" id="qNum" placeholder="Ej: 42" inputmode="numeric"/>
     </div>
-    <button class="submit-btn" onclick="queryTicket()">Consultar Estado</button>
+    <button class="btn btn-gold" onclick="doQuery()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Consultar
+    </button>
 
-    <div class="result-card" id="resultCard">
-      <div class="result-row"><span class="key">Número</span><span class="val" id="r-numero">—</span></div>
-      <div class="result-row"><span class="key">Estado</span><span class="val" id="r-estado">—</span></div>
-      <div class="result-row"><span class="key">Nombre</span><span class="val" id="r-nombre">—</span></div>
-      <div class="result-row"><span class="key">Cédula</span><span class="val" id="r-cedula">—</span></div>
-      <div class="result-row"><span class="key">Documento</span><span class="val" id="r-doc">—</span></div>
-      <div class="result-row"><span class="key">Registro</span><span class="val" id="r-fecha">—</span></div>
+    <div class="result-box" id="resultBox">
+      <div class="rrow"><span class="k">Número</span><span class="v" id="r-n">—</span></div>
+      <div class="rrow"><span class="k">Estado</span><span class="v" id="r-e">—</span></div>
+      <div class="rrow"><span class="k">Comprador</span><span class="v" id="r-c">—</span></div>
+      <div class="rrow"><span class="k">Teléfono</span><span class="v" id="r-t">—</span></div>
+      <div class="rrow"><span class="k">Cédula</span><span class="v" id="r-cc">—</span></div>
 
-      <!-- Carga de comprobante si estado OCUPADO -->
-      <div class="upload-section" id="uploadSection" style="display:none">
-        <p>💳 ¿Ya realizaste el pago? Adjunta tu comprobante:</p>
+      <div class="upload-box" id="uploadBox" style="display:none;">
+        <p>Ya realizaste el pago? Sube tu comprobante:</p>
         <div class="field">
-          <input type="file" id="receiptFile" accept="image/*,.pdf"/>
-          <div class="file-hint">JPG · PNG · PDF · Máx 5 MB</div>
+          <input type="file" id="uFile" accept="image/*,.pdf"/>
+          <div class="file-note">JPG · PNG · PDF — Max 5 MB</div>
         </div>
-        <button class="submit-btn" id="uploadBtn" onclick="uploadReceipt()">📤 Cargar Comprobante</button>
+        <button class="btn btn-gold" id="uBtn" onclick="subirComprobante()" style="margin-top:6px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+          Cargar Comprobante
+        </button>
       </div>
 
-      <!-- Link si ya tiene comprobante -->
-      <div id="compLink" style="display:none;margin-top:10px;text-align:center;font-size:.8rem;">
-        <a id="comprobLink" href="#" target="_blank" style="color:var(--paid-text)">Ver comprobante cargado ↗</a>
+      <div id="compRow" style="display:none;margin-top:10px;text-align:center;">
+        <a id="compUrl" href="#" target="_blank" style="font-size:.78rem;color:var(--p-tx);font-weight:600;">Ver comprobante cargado</a>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ── MODAL ── -->
-<div class="overlay" id="overlay" onclick="overlayClick(event)">
+<!-- ═══ MODAL ═══ -->
+<div class="overlay" id="overlay" onclick="bgClick(event)">
   <div class="modal" id="modal">
-    <div class="modal-header">
-      <span class="icon">🎟️</span>
-      <div>
-        <h2 id="mTitle">Ticket #000</h2>
-        <p id="mSub">Número de rifa seleccionado</p>
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <div class="modal-head-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        <div>
+          <h2 id="mTitle">Ticket #000</h2>
+          <p id="mSub">Selecciona una opción</p>
+        </div>
+        <button class="modal-close" onclick="closeModal()">Cerrar</button>
       </div>
     </div>
     <div class="modal-body">
 
-      <!-- CONFIRM -->
-      <div id="view-confirm">
-        <p class="confirm-q">Número <span id="mNum">—</span><br/>¿Deseas <span>cancelar</span> este número de rifa?</p>
-        <div class="btn-row">
-          <button class="btn btn-yes" onclick="onYes()">Sí, cancelar</button>
-          <button class="btn btn-no" onclick="onNo()">No, registrarme ✍️</button>
+      <!-- VISTA: opciones iniciales -->
+      <div id="v-opciones">
+        <p class="confirm-q">Numero <strong id="mNum">—</strong><br/>Que deseas hacer con este numero?</p>
+        <div class="two-btn">
+          <button class="action-btn apartar" onclick="showForm('apartar')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            Solo Apartar
+          </button>
+          <button class="action-btn pagar" onclick="showForm('pagar')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Comprar y Pagar
+          </button>
         </div>
+        <div class="divider">o</div>
+        <button class="action-btn cancelar" onclick="showConfirmCancel()" style="width:100%;flex-direction:row;gap:10px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          Cancelar Boleta
+        </button>
       </div>
 
-      <!-- FORM -->
-      <div id="view-form" style="display:none">
-        <div class="field"><label>Nombre Completo</label><input type="text" id="f-nombre" placeholder="Tu nombre completo"/></div>
-        <div class="field"><label>Cédula</label><input type="text" id="f-cedula" placeholder="Número de cédula"/></div>
-        <div class="field"><label>Número de Documento</label><input type="text" id="f-doc" placeholder="Número de documento"/></div>
-        <button class="submit-btn" id="submitBtn" onclick="submitForm()">✅ Confirmar Registro</button>
-      </div>
-
-      <!-- CANCELADO SUCCESS (con imagen de pago) -->
-      <div id="view-success" style="display:none">
-        <div class="success-view">
-          <div class="icon-circle gold">🔑</div>
-          <h3>Solicitud de Cancelación</h3>
-          <p>Tu número ha sido marcado como cancelado.<br/>Gracias por participar.</p>
-          <button class="close-btn" onclick="closeModal()">Cerrar</button>
-        </div>
-      </div>
-
-      <!-- REGISTRO SUCCESS (con imagen de cómo pagar) -->
-      <div id="view-reg-success" style="display:none">
-        <div class="success-view">
-          <div class="icon-circle green">🎉</div>
-          <h3>¡Registro Exitoso!</h3>
-          <p>Tu número fue reservado. Para confirmar tu participación realiza el pago:</p>
-          <!-- Imagen de pago: enlace a Drive -->
-          <div class="pay-img-wrap">
-            <a href="https://drive.google.com/file/d/1NHU_dUgGdZFsvFNzwdV52nU1oHHdM6SZ/view?usp=sharing" target="_blank">
-              <img src="https://drive.google.com/thumbnail?id=1NHU_dUgGdZFsvFNzwdV52nU1oHHdM6SZ&sz=w300"
-                   alt="Información de pago"
-                   onerror="this.src='https://placehold.co/140x140/fffdf5/b8860b?text=Ver+Pago'"/>
-            </a>
+      <!-- VISTA: formulario apartar / pagar -->
+      <div id="v-form" style="display:none;">
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px;" id="formSubtitle"></p>
+        <div class="field"><label>Nombre Completo</label><input type="text" id="f-nombre" placeholder="Nombre"/></div>
+        <div class="field"><label>Numero de Telefono</label><input type="tel" id="f-tel" placeholder="Telefono" inputmode="tel"/></div>
+        <div class="field"><label>Cedula</label><input type="text" id="f-ced" placeholder="Cedula" inputmode="numeric"/></div>
+        <div id="f-comp-wrap" style="display:none;">
+          <div class="divider">Comprobante de pago</div>
+          <div class="field">
+            <input type="file" id="f-comp" accept="image/*,.pdf"/>
+            <div class="file-note">JPG · PNG · PDF — Max 5 MB</div>
           </div>
-          <p style="font-size:.75rem">👆 Toca la imagen para ver los datos de pago completos</p>
-          <p style="margin-top:8px">Una vez pagado, consulta tu número y sube el comprobante.</p>
-          <button class="close-btn" onclick="closeModal()">Cerrar</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:4px;">
+          <button class="btn btn-outline" onclick="showView('v-opciones')" style="width:auto;padding:12px 18px;">Atras</button>
+          <button class="btn btn-gold" id="fBtn" onclick="submitForm()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Confirmar
+          </button>
+        </div>
+      </div>
+
+      <!-- VISTA: confirmar cancelar -->
+      <div id="v-cancel-confirm" style="display:none;">
+        <p class="confirm-q">Confirmas que deseas <strong style="color:var(--r-tx)">cancelar</strong> la boleta <strong id="mNumCancel">—</strong>?</p>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-outline" onclick="showView('v-opciones')">No, volver</button>
+          <button class="btn btn-red" onclick="doCancelar()" id="cancelBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            Si, Cancelar
+          </button>
+        </div>
+      </div>
+
+      <!-- VISTA: apartado exitoso -->
+      <div id="v-ok-apartar" style="display:none;">
+        <div class="success-wrap">
+          <div class="success-icon gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          </div>
+          <h3>Numero Apartado</h3>
+          <p>Tu numero fue reservado exitosamente.<br/>Recuerda realizar el pago para confirmarlo.</p>
+          <button class="btn btn-outline" onclick="closeModal()" style="margin-top:16px;">Cerrar</button>
+        </div>
+      </div>
+
+      <!-- VISTA: compra exitosa + imagen de pago -->
+      <div id="v-ok-pagar" style="display:none;">
+        <div class="success-wrap">
+          <div class="success-icon blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--p-tx)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3>Registro Exitoso</h3>
+          <p>Realiza tu pago usando los datos en la imagen:</p>
+          <a href="https://drive.google.com/file/d/1NHU_dUgGdZFsvFNzwdV52nU1oHHdM6SZ/view?usp=sharing" target="_blank" class="pay-img">
+            <img
+              src="https://drive.google.com/thumbnail?id=1NHU_dUgGdZFsvFNzwdV52nU1oHHdM6SZ&sz=w300"
+              alt="Datos de pago"
+              onerror="this.src='https://placehold.co/130x130/eef5ff/2471c8?text=Ver+Pago'"/>
+          </a>
+          <p style="font-size:.75rem">Toca la imagen para ver los datos completos de pago</p>
+          <p style="margin-top:8px;">Cuando ya hayas pagado, ve a <strong>Consultar</strong> y sube tu comprobante.</p>
+          <button class="btn btn-outline" onclick="closeModal()" style="margin-top:14px;">Cerrar</button>
+        </div>
+      </div>
+
+      <!-- VISTA: cancelado exitoso -->
+      <div id="v-ok-cancel" style="display:none;">
+        <div class="success-wrap">
+          <div class="success-icon" style="background:var(--r-bg);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--r-tx)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          </div>
+          <h3>Boleta Cancelada</h3>
+          <p>El numero fue marcado como cancelado.</p>
+          <button class="btn btn-outline" onclick="closeModal()" style="margin-top:16px;">Cerrar</button>
         </div>
       </div>
 
@@ -427,203 +510,198 @@ header p{color:var(--muted);font-size:.9rem;letter-spacing:.05em;}
   </div>
 </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
+<div id="toast"></div>
 
 <script>
-// ── URL del Web App deployado en Google Apps Script ──────────
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbw1JksjniNd1m7W2FdfTeM2TODa-3L-XS8dgR3D9Z4T2gwHLrzyAdL7eDjiTtppSEDO/exec';
-// ─────────────────────────────────────────────────────────────
+const GAS = 'https://script.google.com/macros/s/AKfycby8PP6VmoRbQNsEktk-pqwvN9EIXWUnUdXh_0BQSViT-W6VXav4xHGF2haH2hjRleKJ/exec';
 
-var allTickets = [];
-var currentNum = null;
+var tickets = [];
+var curNum  = null;
+var curMode = null; // 'apartar' | 'pagar'
 
-/* TABS */
-function switchTab(id, btn) {
+/* ── UTILS ── */
+function $(id){return document.getElementById(id);}
+function show(id){$(id).style.display='';}
+function hide(id){$(id).style.display='none';}
+function showView(id){
+  ['v-opciones','v-form','v-cancel-confirm','v-ok-apartar','v-ok-pagar','v-ok-cancel']
+    .forEach(function(v){hide(v);});
+  show(id);
+}
+function toast(msg,type){
+  var t=$('toast');
+  t.textContent=msg;t.className='show '+(type||'ok');
+  clearTimeout(t._t);
+  t._t=setTimeout(function(){t.className='';},3000);
+}
+function switchTab(id,btn){
   document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
-  document.getElementById(id).classList.add('active');
-  btn.classList.add('active');
+  $(id).classList.add('active');btn.classList.add('active');
 }
 
-/* TOAST */
-function showToast(msg, type) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast ' + (type||'success') + ' show';
-  setTimeout(function(){t.classList.remove('show');}, 3000);
+/* ── API ── */
+async function get(params){
+  var url=GAS+'?'+Object.keys(params).map(function(k){return k+'='+encodeURIComponent(params[k]);}).join('&');
+  var r=await fetch(url);return r.json();
+}
+async function post(body){
+  var r=await fetch(GAS,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  return r.json();
 }
 
-/* SHOW/HIDE helpers */
-function show(id){document.getElementById(id).style.display='';}
-function hide(id){document.getElementById(id).style.display='none';}
-
-/* LOAD */
-async function loadTickets() {
-  try {
-    var res  = await fetch(GAS_URL + '?action=getTickets');
-    var data = await res.json();
-    allTickets = data.tickets || [];
-    renderGrid(allTickets);
-    renderStats(allTickets);
-  } catch(e) {
-    document.getElementById('grid').innerHTML =
-      '<div class="loader" style="color:#e74c3c">⚠️ No se pudo conectar. Verifica la URL del script.</div>';
+/* ── LOAD ── */
+async function load(){
+  try{
+    var d=await get({action:'getTickets'});
+    tickets=d.tickets||[];
+    renderStats(tickets);renderGrid(tickets);
+  }catch(e){
+    $('grid').innerHTML='<div class="loader" style="color:var(--r-tx)">Sin conexion. Verifica la URL del script.</div>';
   }
 }
 
-/* STATS */
-function renderStats(tickets) {
-  var cnt={DISPONIBLE:0,OCUPADO:0,PAGADO:0,CANCELADO:0};
-  tickets.forEach(function(t){cnt[t.estado]=(cnt[t.estado]||0)+1;});
-  document.getElementById('stats').innerHTML =
-    '<div class="stat"><div class="stat-n gold">'+tickets.length+'</div><div class="stat-l">Total</div></div>'+
-    '<div class="stat"><div class="stat-n green">'+(cnt.DISPONIBLE||0)+'</div><div class="stat-l">Disponibles</div></div>'+
-    '<div class="stat"><div class="stat-n red">'+(cnt.OCUPADO||0)+'</div><div class="stat-l">Ocupados</div></div>'+
-    '<div class="stat"><div class="stat-n blue">'+(cnt.PAGADO||0)+'</div><div class="stat-l">Pagados</div></div>'+
-    '<div class="stat"><div class="stat-n grey">'+(cnt.CANCELADO||0)+'</div><div class="stat-l">Cancelados</div></div>';
+/* ── STATS ── */
+function renderStats(tt){
+  var c={DISPONIBLE:0,APARTADO:0,PAGADO:0,CANCELADO:0};
+  tt.forEach(function(t){c[t.estado]=(c[t.estado]||0)+1;});
+  $('stats').innerHTML=
+    '<div class="stat"><div class="stat-n gold">'+tt.length+'</div><div class="stat-l">Total</div></div>'+
+    '<div class="stat"><div class="stat-n g">'+(c.DISPONIBLE||0)+'</div><div class="stat-l">Disp.</div></div>'+
+    '<div class="stat"><div class="stat-n a">'+(c.APARTADO||0)+'</div><div class="stat-l">Apart.</div></div>'+
+    '<div class="stat"><div class="stat-n p">'+(c.PAGADO||0)+'</div><div class="stat-l">Pagado</div></div>'+
+    '<div class="stat"><div class="stat-n c">'+(c.CANCELADO||0)+'</div><div class="stat-l">Canc.</div></div>';
 }
 
-/* GRID */
-function badgeLabel(e){return{DISPONIBLE:'libre',OCUPADO:'ocupado',PAGADO:'pagado',CANCELADO:'cancelado'}[e]||e;}
-function renderGrid(tickets) {
-  var grid = document.getElementById('grid');
-  if (!tickets.length){grid.innerHTML='<div class="loader">Sin tickets</div>';return;}
-  grid.innerHTML='';
-  tickets.forEach(function(t){
+/* ── GRID ── */
+var lbl={DISPONIBLE:'libre',APARTADO:'apart.',PAGADO:'pagado',CANCELADO:'cancel.'};
+function renderGrid(tt){
+  var g=$('grid');
+  if(!tt.length){g.innerHTML='<div class="loader">Sin tickets</div>';return;}
+  g.innerHTML='';
+  tt.forEach(function(t){
     var el=document.createElement('div');
     el.className='ticket '+t.estado;
-    el.id='t-'+t.numero;
-    el.innerHTML=t.numero+'<span class="ticket-badge">'+badgeLabel(t.estado)+'</span>';
+    el.id='tk-'+t.numero;
+    el.innerHTML=t.numero+'<span class="ticket-badge">'+(lbl[t.estado]||t.estado)+'</span>';
     if(t.estado==='DISPONIBLE') el.onclick=function(){openModal(t.numero);};
-    grid.appendChild(el);
+    g.appendChild(el);
   });
 }
 
-/* SEARCH HIGHLIGHT */
-function highlightTicket(){
-  var num=document.getElementById('searchNum').value.trim();
-  if(!num)return;
-  document.querySelectorAll('.ticket').forEach(function(el){el.style.outline='';el.style.outlineOffset='';});
-  var el=document.getElementById('t-'+num);
+/* ── HIGHLIGHT ── */
+function highlight(){
+  var n=$('sNum').value.trim();
+  if(!n)return;
+  document.querySelectorAll('.ticket').forEach(function(el){el.style.outline='';});
+  var el=$('tk-'+n);
   if(el){
     el.scrollIntoView({behavior:'smooth',block:'center'});
     el.style.outline='3px solid var(--gold)';
     el.style.outlineOffset='3px';
     setTimeout(function(){el.style.outline='';},2400);
-  } else showToast('Número no encontrado','error');
+  } else toast('Numero no encontrado','err');
 }
 
-/* MODAL */
-function openModal(numero){
-  currentNum=numero;
-  show('view-confirm');hide('view-form');hide('view-success');hide('view-reg-success');
-  document.getElementById('mTitle').textContent='Ticket #'+numero;
-  document.getElementById('mNum').textContent='#'+numero;
-  document.getElementById('f-nombre').value='';
-  document.getElementById('f-cedula').value='';
-  document.getElementById('f-doc').value='';
-  document.getElementById('overlay').classList.add('open');
+/* ── MODAL ── */
+function openModal(num){
+  curNum=num;
+  $('mTitle').textContent='Ticket #'+num;
+  $('mSub').textContent='Selecciona una opcion';
+  $('mNumCancel').textContent='#'+num;
+  $('mNum').textContent='#'+num;
+  showView('v-opciones');
+  $('overlay').classList.add('open');
 }
 function closeModal(){
-  document.getElementById('overlay').classList.remove('open');
-  currentNum=null;
-  loadTickets(); // refresca grid al cerrar
+  $('overlay').classList.remove('open');
+  curNum=null;curMode=null;
+  load();
 }
-function overlayClick(e){if(e.target===document.getElementById('overlay'))closeModal();}
+function bgClick(e){if(e.target===$('overlay'))closeModal();}
 
-async function onYes(){
-  if(!currentNum)return;
-  var data=await postGAS({action:'cancelTicket',numero:currentNum});
-  if(data.error){showToast(data.error,'error');return;}
-  hide('view-confirm');show('view-success');
+/* ── FORM ── */
+function showForm(mode){
+  curMode=mode;
+  $('formSubtitle').textContent=mode==='pagar'
+    ?'Completa tus datos para comprar y pagar la boleta'
+    :'Completa tus datos para apartar la boleta sin pago inmediato';
+  $('f-nombre').value='';$('f-tel').value='';$('f-ced').value='';
+  hide('f-comp-wrap');
+  $('fBtn').textContent='Confirmar';$('fBtn').disabled=false;
+  showView('v-form');
 }
-
-function onNo(){hide('view-confirm');show('view-form');}
 
 async function submitForm(){
-  var nombre=document.getElementById('f-nombre').value.trim();
-  var cedula=document.getElementById('f-cedula').value.trim();
-  var doc=document.getElementById('f-doc').value.trim();
-  if(!nombre||!cedula||!doc){showToast('Completa todos los campos','error');return;}
-  var btn=document.getElementById('submitBtn');
-  btn.disabled=true;btn.textContent='Registrando…';
-  var data=await postGAS({action:'registerTicket',numero:currentNum,nombre:nombre,cedula:cedula,documento:doc});
-  btn.disabled=false;btn.textContent='✅ Confirmar Registro';
-  if(data.error){showToast(data.error,'error');return;}
-  hide('view-form');show('view-reg-success');
+  var nombre=$('f-nombre').value.trim();
+  var tel=$('f-tel').value.trim();
+  var ced=$('f-ced').value.trim();
+  if(!nombre||!tel||!ced){toast('Completa todos los campos','err');return;}
+  var btn=$('fBtn');btn.disabled=true;btn.textContent='Guardando…';
+  var d=await post({action:curMode,numero:curNum,comprador:nombre,telefono:tel,cedula:ced});
+  btn.disabled=false;btn.textContent='Confirmar';
+  if(d.error){toast(d.error,'err');return;}
+  if(curMode==='pagar'){showView('v-ok-pagar');}
+  else{showView('v-ok-apartar');}
 }
 
-/* QUERY */
-async function queryTicket(){
-  var num=document.getElementById('queryNum').value.trim();
-  if(!num){showToast('Ingresa un número','error');return;}
-  var rc=document.getElementById('resultCard');
-  rc.classList.remove('show');
+/* ── CANCELAR ── */
+function showConfirmCancel(){showView('v-cancel-confirm');}
+async function doCancelar(){
+  var btn=$('cancelBtn');btn.disabled=true;btn.textContent='Cancelando…';
+  var d=await post({action:'cancelar',numero:curNum});
+  btn.disabled=false;btn.textContent='Si, Cancelar';
+  if(d.error){toast(d.error,'err');return;}
+  showView('v-ok-cancel');
+}
+
+/* ── QUERY ── */
+async function doQuery(){
+  var n=$('qNum').value.trim();
+  if(!n){toast('Ingresa un numero','err');return;}
+  var rb=$('resultBox');rb.classList.remove('show');
   try{
-    var res=await fetch(GAS_URL+'?action=queryTicket&numero='+encodeURIComponent(num));
-    var data=await res.json();
-    if(data.error){showToast(data.error,'error');return;}
-    var t=data.ticket;
-    document.getElementById('r-numero').textContent=t.numero;
-    document.getElementById('r-estado').innerHTML='<span class="badge '+t.estado+'">'+t.estado+'</span>';
-    document.getElementById('r-nombre').textContent=t.nombre||'—';
-    document.getElementById('r-cedula').textContent=t.cedula||'—';
-    document.getElementById('r-doc').textContent=t.documento||'—';
-    document.getElementById('r-fecha').textContent=t.fecha||'—';
-
-    var up=document.getElementById('uploadSection');
-    var cl=document.getElementById('compLink');
-    up.dataset.numero=t.numero;
-
-    if(t.estado==='OCUPADO'){
-      up.style.display='';cl.style.display='none';
-    } else if(t.comprobante){
-      up.style.display='none';
-      document.getElementById('comprobLink').href=t.comprobante;
-      cl.style.display='';
-    } else {
-      up.style.display='none';cl.style.display='none';
-    }
-    rc.classList.add('show');
-  } catch(e){showToast('Error de conexión','error');}
+    var d=await get({action:'query',numero:n});
+    if(d.error){toast(d.error,'err');return;}
+    var t=d.ticket;
+    $('r-n').textContent=t.numero;
+    $('r-e').innerHTML='<span class="badge '+t.estado+'">'+t.estado+'</span>';
+    $('r-c').textContent=t.comprador||'—';
+    $('r-t').textContent=t.telefono||'—';
+    $('r-cc').textContent=t.cedula||'—';
+    var ub=$('uploadBox'),cr=$('compRow');
+    $('uploadBox').dataset.num=t.numero;
+    if(t.estado==='APARTADO'){ub.style.display='';cr.style.display='none';}
+    else if(t.desprendible){ub.style.display='none';$('compUrl').href=t.desprendible;cr.style.display='';}
+    else{ub.style.display='none';cr.style.display='none';}
+    rb.classList.add('show');
+  }catch(e){toast('Error de conexion','err');}
 }
 
-/* UPLOAD RECEIPT */
-async function uploadReceipt(){
-  var file=document.getElementById('receiptFile').files[0];
-  var numero=document.getElementById('uploadSection').dataset.numero;
-  if(!file){showToast('Selecciona un archivo','error');return;}
-  if(!numero){showToast('Número no identificado','error');return;}
-  if(file.size>5*1024*1024){showToast('Archivo mayor a 5 MB','error');return;}
-  var btn=document.getElementById('uploadBtn');
-  btn.disabled=true;btn.textContent='Subiendo…';
+/* ── SUBIR COMPROBANTE ── */
+async function subirComprobante(){
+  var file=$('uFile').files[0];
+  var num=$('uploadBox').dataset.num;
+  if(!file){toast('Selecciona un archivo','err');return;}
+  if(file.size>5*1024*1024){toast('Archivo mayor a 5 MB','err');return;}
+  var btn=$('uBtn');btn.disabled=true;btn.textContent='Subiendo…';
   var reader=new FileReader();
   reader.onload=async function(ev){
-    var base64=ev.target.result.split(',')[1];
-    var data=await postGAS({action:'uploadReceipt',numero:numero,base64:base64,mimeType:file.type,fileName:file.name});
-    btn.disabled=false;btn.textContent='📤 Cargar Comprobante';
-    if(data.error){showToast(data.error,'error');return;}
-    showToast('¡Comprobante cargado!');
-    document.getElementById('comprobLink').href=data.url;
-    document.getElementById('compLink').style.display='';
-    document.getElementById('uploadSection').style.display='none';
-    document.getElementById('r-estado').innerHTML='<span class="badge PAGADO">PAGADO</span>';
+    var b64=ev.target.result.split(',')[1];
+    var d=await post({action:'comprobante',numero:num,base64:b64,mimeType:file.type,fileName:file.name});
+    btn.disabled=false;btn.textContent='Cargar Comprobante';
+    if(d.error){toast(d.error,'err');return;}
+    toast('Comprobante cargado correctamente');
+    $('compUrl').href=d.url;$('compRow').style.display='';
+    $('uploadBox').style.display='none';
+    $('r-e').innerHTML='<span class="badge PAGADO">PAGADO</span>';
   };
   reader.readAsDataURL(file);
 }
 
-/* API POST */
-async function postGAS(payload){
-  try{
-    var res=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    return await res.json();
-  } catch(e){return {error:'Error de conexión con el servidor'};}
-}
-
-/* INIT */
-loadTickets();
-setInterval(loadTickets,60000);
+/* ── INIT ── */
+load();
+setInterval(load,60000);
 </script>
 </body>
 </html>
