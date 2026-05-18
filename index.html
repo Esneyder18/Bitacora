@@ -3,1433 +3,627 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>GA3-220201501-AA4-EV01 · Bitácora · Robinson Zapata Anzola</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet"/>
+<title>Sistema de Rifa — El Gran Sorteo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-/* ════════════════════════════════
-   VARIABLES & RESET
-════════════════════════════════ */
 :root{
-  --navy:#0d2340; --navy2:#163354; --navy3:#1e4a7a;
-  --amber:#e8a020; --amber2:#f5b830; --amber3:#fcd060;
-  --cream:#faf7f2; --cream2:#f2ede4; --white:#ffffff;
-  --text:#1a2535; --text2:#3d5166; --muted:#6b7f94;
-  --border:#dde5ef; --border2:#c8d5e3;
-  --green:#1a6b3a; --green2:#22a558;
-  --red:#c0392b; --purple:#5b3fa0;
-  --shadow:0 4px 24px rgba(13,35,64,.10);
-  --shadow2:0 8px 40px rgba(13,35,64,.16);
-  --r:12px; --r2:8px;
-  --ff-head:'Playfair Display',Georgia,serif;
-  --ff-body:'Lato',sans-serif;
-  --ff-mono:'JetBrains Mono',monospace;
+  --gold:#b8860b;
+  --gold2:#d4a017;
+  --gold3:#f5c842;
+  --bg:#f7f4ee;
+  --bg2:#ffffff;
+  --bg3:#fdf9f2;
+  --surface:#f0ebe0;
+  --border:#e0d5c0;
+  --border2:#c8bda0;
+  --text:#2a2010;
+  --muted:#7a6e58;
+  --avail-bg:#edfaf2;
+  --avail-border:#27ae60;
+  --avail-text:#1a7a43;
+  --ocup-bg:#fef0ee;
+  --ocup-border:#e74c3c;
+  --ocup-text:#b03020;
+  --paid-bg:#eef4fd;
+  --paid-border:#2980b9;
+  --paid-text:#1a5a8a;
+  --canc-bg:#f5f5f3;
+  --canc-border:#aaa;
+  --canc-text:#888;
+  --r:12px;
+  --sh:0 4px 24px rgba(0,0,0,.10);
 }
-*{box-sizing:border-box;margin:0;padding:0}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:var(--ff-body);background:#e8eef6;color:var(--text);line-height:1.75;font-size:15px}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-
-
-/* ════════════════════════════════
-   PAGE WRAPPER
-════════════════════════════════ */
-.doc{max-width:980px;margin:0 auto;padding:0 0 80px}
-
-/* ════════════════════════════════
-   PORTADA
-════════════════════════════════ */
-.cover{
-  background:var(--navy);
-  min-height:100vh;display:flex;flex-direction:column;
-  position:relative;overflow:hidden;
-}
-/* geometric pattern bg */
-.cover::before{
-  content:"";position:absolute;inset:0;
-  background-image:
-    radial-gradient(circle at 20% 20%,rgba(232,160,32,.08) 0%,transparent 50%),
-    radial-gradient(circle at 80% 80%,rgba(30,74,122,.6) 0%,transparent 50%),
-    repeating-linear-gradient(45deg,transparent,transparent 60px,rgba(255,255,255,.015) 60px,rgba(255,255,255,.015) 61px);
-}
-.cover-accent{position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--amber3),var(--amber),var(--amber2),var(--amber3))}
-.cover-bottom-bar{position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--navy3),var(--amber),var(--navy3))}
-
-.cover-inner{position:relative;z-index:2;flex:1;display:flex;flex-direction:column}
-.cover-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:28px 48px;border-bottom:1px solid rgba(255,255,255,.08);
-}
-.cover-sena{display:flex;align-items:center;gap:14px}
-.cover-sena-badge{
-  width:48px;height:48px;border-radius:10px;
-  background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;color:var(--amber2);
-}
-.cover-sena-txt strong{color:#fff;display:block;font-size:15px;font-weight:700}
-.cover-sena-txt span{color:rgba(255,255,255,.5);font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
-.cover-code{
-  background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.3);
-  border-radius:6px;padding:6px 14px;font-size:11px;font-weight:700;
-  color:var(--amber2);letter-spacing:.5px;font-family:var(--ff-mono);
-}
-
-.cover-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 48px;text-align:center}
-.cover-tag{
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.35);
-  border-radius:30px;padding:8px 22px;color:var(--amber2);
-  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  margin-bottom:32px;
-}
-.cover-h1{
-  font-family:var(--ff-head);font-size:clamp(32px,5vw,56px);font-weight:900;
-  color:#fff;line-height:1.1;margin-bottom:14px;
-}
-.cover-h1 em{color:var(--amber2);font-style:normal}
-.cover-sub{color:rgba(255,255,255,.6);font-size:16px;max-width:580px;margin:0 auto 48px;line-height:1.7;font-weight:300}
-.cover-rule{width:60px;height:3px;background:var(--amber);margin:0 auto 48px;border-radius:2px}
-
-.cover-meta{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
-  border-radius:14px;overflow:hidden;max-width:680px;width:100%;
-}
-.cmi{padding:20px 22px;border-right:1px solid rgba(255,255,255,.07)}
-.cmi:last-child{border-right:none}
-.cmi label{display:block;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:7px}
-.cmi span{color:#fff;font-size:13px;font-weight:600;line-height:1.4;display:block}
-
-.cover-footer{padding:20px 48px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;font-size:11px;color:rgba(255,255,255,.35)}
-
-/* ════════════════════════════════
-   SECTION STYLES
-════════════════════════════════ */
-.sec-wrap{background:#fff;margin:6px 0;border-top:3px solid var(--navy)}
-.sec-head{
-  background:linear-gradient(120deg,var(--navy) 0%,var(--navy3) 100%);
-  padding:28px 48px;display:flex;align-items:center;gap:18px;
-}
-.sec-ico{
-  width:46px;height:46px;border-radius:10px;flex-shrink:0;
-  background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.15);
-  display:flex;align-items:center;justify-content:center;
-  font-size:20px;color:var(--amber2);
-}
-.sec-head-txt .sec-label{color:rgba(255,255,255,.45);font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:5px}
-.sec-head-txt h2{font-family:var(--ff-head);font-size:clamp(20px,3vw,28px);color:#fff;font-weight:700;line-height:1.1}
-.sec-head-txt p{color:rgba(255,255,255,.5);font-size:13px;margin-top:5px}
-
-.sec-body{padding:36px 48px}
-
-/* ════════════════════════════════
-   TYPOGRAPHY
-════════════════════════════════ */
-.p{font-size:14.5px;line-height:1.85;margin-bottom:14px;color:var(--text)}
-.p:last-child{margin-bottom:0}
-h3.sub{
-  font-family:var(--ff-head);font-size:18px;color:var(--navy);
-  margin:28px 0 14px;display:flex;align-items:center;gap:10px;
-}
-h3.sub::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
-h4.sub2{font-size:13.5px;font-weight:700;color:var(--navy2);margin:18px 0 10px;letter-spacing:.3px}
-
-/* ════════════════════════════════
-   CALLOUTS
-════════════════════════════════ */
-.callout{border-radius:10px;padding:15px 20px;font-size:13.5px;margin:16px 0;display:flex;gap:12px;align-items:flex-start}
-.callout i{flex-shrink:0;margin-top:2px;font-size:15px}
-.callout.blue{background:#eef5ff;border-left:4px solid var(--navy3);color:var(--navy2)}
-.callout.blue i{color:var(--navy3)}
-.callout.green{background:#edfaf3;border-left:4px solid var(--green);color:#155a2f}
-.callout.green i{color:var(--green2)}
-.callout.amber{background:#fff8e6;border-left:4px solid var(--amber);color:#7a4f00}
-.callout.amber i{color:var(--amber)}
-.callout.purple{background:#f5f0ff;border-left:4px solid var(--purple);color:#3d2875}
-.callout.purple i{color:var(--purple)}
-
-/* ════════════════════════════════
-   TABLES
-════════════════════════════════ */
-.tw{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin:14px 0}
-table{width:100%;border-collapse:collapse;font-size:13px}
-thead tr{background:var(--navy)}
-thead th{padding:11px 14px;text-align:left;font-size:11px;font-weight:700;color:rgba(255,255,255,.9);letter-spacing:.5px;text-transform:uppercase}
-tbody tr{border-bottom:1px solid var(--border);transition:background .12s}
-tbody tr:last-child{border-bottom:none}
-tbody tr:hover{background:var(--cream)}
-td{padding:10px 14px;vertical-align:middle;font-size:13px}
-.bk{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
-.bk-g{background:#dcfce7;color:#15803d} .bk-r{background:#fee2e2;color:#dc2626}
-.bk-b{background:#dbeafe;color:#1d4ed8} .bk-y{background:#fef3c7;color:#92400e}
-.bk-gr{background:#f1f5f9;color:#475569} .bk-p{background:#ede9fe;color:#6d28d9}
-.bk-n{background:#1a2535;color:#fff}
-
-/* ════════════════════════════════
-   OBJETIVOS
-════════════════════════════════ */
-.obj-gen{
-  background:linear-gradient(135deg,var(--navy) 0%,var(--navy3) 100%);
-  border-radius:14px;padding:24px 28px;color:#fff;margin:16px 0;
-}
-.obj-gen-tag{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber2);margin-bottom:10px;display:block}
-.obj-gen p{font-family:var(--ff-head);font-size:16px;font-style:italic;line-height:1.65;font-weight:400}
-.obj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:16px 0}
-.obj-item{border:1.5px solid var(--border);border-radius:12px;padding:18px 20px;background:#fff;position:relative;overflow:hidden;transition:box-shadow .2s,transform .2s}
-.obj-item:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
-.obj-item::before{content:attr(data-n);position:absolute;bottom:-10px;right:10px;font-family:var(--ff-head);font-size:70px;font-weight:900;color:rgba(13,35,64,.04);line-height:1}
-.obj-item-tag{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy3);display:flex;align-items:center;gap:6px;margin-bottom:8px}
-.obj-item p{font-size:13px;line-height:1.65;color:var(--text2)}
-
-/* ════════════════════════════════
-   TIMELINE
-════════════════════════════════ */
-.timeline{padding-left:30px;margin:16px 0;position:relative}
-.timeline::before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:linear-gradient(to bottom,var(--navy),var(--navy3),rgba(30,74,122,.2))}
-.tl-item{position:relative;margin-bottom:24px;padding-left:24px}
-.tl-dot{position:absolute;left:-30px;top:5px;width:18px;height:18px;border-radius:50%;background:var(--amber);border:3px solid #fff;box-shadow:0 0 0 2px var(--amber)}
-.tl-yr{font-size:10px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;font-family:var(--ff-mono)}
-.tl-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:5px;font-family:var(--ff-head)}
-.tl-body{font-size:13px;color:var(--text2);line-height:1.65}
-
-/* ════════════════════════════════
-   DEFINICIÓN PERSONAL
-════════════════════════════════ */
-.def-box{
-  background:var(--navy);border-radius:16px;
-  padding:32px 36px;margin:20px 0;position:relative;overflow:hidden;
-}
-.def-box::before{
-  content:"\201C";position:absolute;top:-30px;left:20px;
-  font-family:var(--ff-head);font-size:180px;color:rgba(255,255,255,.04);line-height:1;
-}
-.def-box-tag{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber2);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.def-box p{font-family:var(--ff-head);font-size:17px;color:#fff;line-height:1.75;font-style:italic;position:relative;z-index:1}
-.def-box-author{margin-top:20px;display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.45);font-size:12px}
-.def-box-author::before{content:"";flex:1;height:1px;background:rgba(255,255,255,.1)}
-
-/* ════════════════════════════════
-   LEYES
-════════════════════════════════ */
-.law-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;margin:16px 0}
-.law-card{border-radius:12px;padding:18px 20px;border:1.5px solid}
-.law-card.n1{background:#f0fdf6;border-color:#86efac}
-.law-card.n2{background:#eff6ff;border-color:#93c5fd}
-.law-card.n3{background:#faf5ff;border-color:#c4b5fd}
-.law-card.td1{background:#fff7ed;border-color:#fcd34d}
-.law-card.td2{background:#fef2f2;border-color:#fca5a5}
-.law-card.grav{background:#f0fdfa;border-color:#5eead4}
-.law-tag{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;display:block}
-.law-card.n1 .law-tag{color:#15803d}.law-card.n2 .law-tag{color:#1d4ed8}
-.law-card.n3 .law-tag{color:#6d28d9}.law-card.td1 .law-tag{color:#b45309}
-.law-card.td2 .law-tag{color:#dc2626}.law-card.grav .law-tag{color:#0d9488}
-.law-name{font-family:var(--ff-head);font-size:15px;font-weight:700;color:var(--navy);margin-bottom:7px}
-.law-formula{
-  font-family:var(--ff-mono);font-size:16px;font-weight:700;color:var(--navy);
-  background:rgba(255,255,255,.7);border-radius:7px;
-  padding:6px 12px;display:inline-block;margin:5px 0 8px;letter-spacing:.5px;
-}
-.law-body{font-size:12.5px;color:var(--text2);line-height:1.6}
-.law-app{font-size:11.5px;color:var(--muted,#6b7f94);margin-top:6px;font-style:italic}
-
-/* ════════════════════════════════
-   VIDEO SIMULADO
-════════════════════════════════ */
-.video-wrapper{border-radius:16px;overflow:hidden;box-shadow:var(--shadow2);margin:20px 0;border:1px solid var(--border)}
-.video-screen{
-  aspect-ratio:16/9;position:relative;overflow:hidden;
-  background:linear-gradient(160deg,#0a1628 0%,#0d2340 40%,#0a3320 75%,#122a0a 100%);
-  cursor:pointer;
-}
-/* Title overlay */
-.vs-title{position:absolute;bottom:0;left:0;right:0;padding:20px 22px 16px;background:linear-gradient(to top,rgba(0,0,0,.7),transparent)}
-.vs-title strong{display:block;font-size:14px;color:#fff;margin-bottom:3px;font-family:var(--ff-head)}
-.vs-title span{font-size:11px;color:rgba(255,255,255,.6)}
-
-.video-meta{
-  background:var(--cream);padding:14px 20px;
-  display:flex;align-items:center;gap:14px;
-  border-top:1px solid var(--border);
-}
-.yt-icon{color:#ef4444;font-size:22px;flex-shrink:0}
-.vm-info strong{display:block;font-size:13px;color:var(--navy);margin-bottom:2px}
-.vm-info a{font-size:12px;color:var(--navy3);font-family:var(--ff-mono);text-decoration:none;word-break:break-all}
-.vm-info a:hover{color:var(--amber)}
-.vm-chips{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
-.vm-chip{background:var(--navy);color:rgba(255,255,255,.75);font-size:10px;padding:4px 10px;border-radius:20px;font-weight:600;letter-spacing:.3px}
-
-/* ════════════════════════════════
-   FOTOS SIMULADAS REALISTAS
-════════════════════════════════ */
-.photo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin:20px 0}
-.photo-card{border-radius:14px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);transition:transform .2s,box-shadow .2s}
-.photo-card:hover{transform:translateY(-3px);box-shadow:var(--shadow2)}
-
-/* Photo SVG containers — each one is a scene */
-.ph-scene{aspect-ratio:4/3;position:relative;overflow:hidden}
-
-/* FOTO 1: Mesa de trabajo con materiales */
-.ph1{background:linear-gradient(180deg,#d4c5a9 0%,#c9b89a 40%,#b8a67a 100%)}
-.ph1::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(255,255,255,.35),transparent 60%)}
-
-/* FOTO 2: Plano inclinado */
-.ph2{background:linear-gradient(180deg,#b8d4e8 0%,#a0c4d8 30%,#c9b89a 60%,#a89060 100%)}
-
-/* FOTO 3: Midiendo altura */
-.ph3{background:linear-gradient(160deg,#e8e0d0 0%,#d4c8a8 50%,#c0b090 100%)}
-
-/* FOTO 4: Esfera en cima del plano */
-.ph4{background:linear-gradient(180deg,#d8e4f0 0%,#c8d8e8 40%,#c4b898 70%,#b0a070 100%)}
-
-/* FOTO 5: Tomando tiempo */
-.ph5{background:linear-gradient(160deg,#e0d8c8 0%,#d0c4a0 60%,#bca870 100%)}
-
-/* FOTO 6: Apuntando datos */
-.ph6{background:linear-gradient(180deg,#dce8f0 0%,#c8d4e0 40%,#d0c8a8 70%,#b8a878 100%)}
-
-/* Etiquetas sobre foto */
-.ph-num{
-  position:absolute;top:10px;left:10px;z-index:10;
-  background:rgba(13,35,64,.75);color:#fff;
-  font-size:9px;font-weight:700;font-family:var(--ff-mono);
-  padding:4px 8px;border-radius:5px;letter-spacing:.5px;
-}
-.ph-step{
-  position:absolute;top:10px;right:10px;z-index:10;
-  background:rgba(232,160,32,.9);color:var(--navy);
-  font-size:9px;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:.5px;
-}
-/* Caption */
-.ph-cap{padding:12px 15px;background:#fff}
-.ph-cap strong{display:block;font-size:12.5px;color:var(--navy);margin-bottom:3px;font-family:var(--ff-head)}
-.ph-cap span{font-size:11.5px;color:var(--text2);line-height:1.5;display:block}
-/* Simulated timestamp */
-.ph-ts{position:absolute;bottom:8px;right:10px;z-index:10;font-size:9px;font-family:var(--ff-mono);color:rgba(255,255,255,.7);background:rgba(0,0,0,.35);padding:2px 6px;border-radius:3px}
-
-/* ════════════════════════════════
-   INFORME EMBED (resultados lab)
-════════════════════════════════ */
-.lab-box{background:var(--cream);border:1.5px solid var(--border2);border-radius:14px;padding:24px 28px;margin:16px 0}
-.lab-box-head{display:flex;align-items:center;gap:14px;margin-bottom:18px}
-.lab-ico{width:46px;height:46px;background:linear-gradient(135deg,var(--navy),var(--navy3));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--amber2);flex-shrink:0}
-.lab-box-head h4{font-family:var(--ff-head);font-size:16px;color:var(--navy);font-weight:700}
-.lab-box-head small{display:block;font-size:11.5px;color:var(--muted,#6b7f94);margin-top:3px}
-.res-chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:14px 0}
-.rc{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.rc-l{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted,#6b7f94);font-weight:700;margin-bottom:4px}
-.rc-v{font-size:22px;font-weight:700;color:var(--navy);font-family:var(--ff-mono);line-height:1}
-.rc-u{font-size:10px;color:var(--muted,#6b7f94);margin-top:3px}
-
-/* ════════════════════════════════
-   INFOGRAFÍA
-════════════════════════════════ */
-.infog{
-  background:var(--navy);border-radius:18px;
-  padding:36px;margin:20px 0;position:relative;overflow:hidden;
-}
-.infog::before{
-  content:"";position:absolute;inset:0;
+/* BG pattern */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background:
-    radial-gradient(ellipse 60% 50% at 10% 10%,rgba(232,160,32,.06),transparent),
-    radial-gradient(ellipse 50% 60% at 90% 90%,rgba(30,74,122,.4),transparent),
-    repeating-linear-gradient(-45deg,transparent,transparent 40px,rgba(255,255,255,.01) 40px,rgba(255,255,255,.01) 41px);
-}
-.infog-title{text-align:center;font-family:var(--ff-head);font-size:24px;font-weight:900;color:#fff;margin-bottom:4px;position:relative;z-index:1}
-.infog-sub{text-align:center;font-size:11px;color:rgba(255,255,255,.35);letter-spacing:2px;text-transform:uppercase;margin-bottom:30px;position:relative;z-index:1}
-.infog-sec-title{color:rgba(255,255,255,.35);font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;text-align:center;margin:24px 0 14px;position:relative;z-index:1;display:flex;align-items:center;gap:10px}
-.infog-sec-title::before,.infog-sec-title::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.08)}
-.infog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;position:relative;z-index:1}
-.ig-block{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px 16px;transition:background .2s}
-.ig-block:hover{background:rgba(255,255,255,.1)}
-.ig-ico{font-size:28px;display:block;margin-bottom:10px;text-align:center}
-.ig-title{font-size:11.5px;font-weight:700;color:var(--amber2);text-align:center;margin-bottom:8px;letter-spacing:.3px;text-transform:uppercase}
-.ig-body{font-size:11.5px;color:rgba(255,255,255,.65);line-height:1.65;text-align:center}
-.ig-body ul{list-style:none;text-align:left;padding-left:6px}
-.ig-body ul li{padding:1px 0;display:flex;align-items:baseline;gap:6px}
-.ig-body ul li::before{content:"→";color:var(--amber);font-size:9px;flex-shrink:0}
-
-.infog-formulas{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;position:relative;z-index:1}
-.if-chip{background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.25);border-radius:10px;padding:10px 16px;text-align:center;min-width:120px}
-.if-f{font-family:var(--ff-mono);font-size:15px;font-weight:700;color:var(--amber2);display:block}
-.if-n{font-size:10px;color:rgba(255,255,255,.4);margin-top:4px;display:block}
-
-.infog-exp{
-  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
-  border-radius:12px;padding:20px;margin-top:18px;position:relative;z-index:1;
-}
-.infog-exp-title{color:rgba(255,255,255,.3);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;margin-bottom:14px}
-.infog-exp-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;text-align:center}
-.ies-v{font-family:var(--ff-mono);font-size:24px;font-weight:700;color:var(--amber2);display:block}
-.ies-l{font-size:10px;color:rgba(255,255,255,.4);margin-top:4px;display:block}
-
-.infog-footer{text-align:center;font-size:10px;color:rgba(255,255,255,.25);margin-top:22px;position:relative;z-index:1}
-
-/* ════════════════════════════════
-   CONCLUSIONES
-════════════════════════════════ */
-.concl-list{list-style:none;margin:14px 0}
-.cl-item{display:flex;gap:16px;padding:16px;background:var(--cream);border-radius:12px;margin-bottom:12px;border-left:3px solid var(--navy);transition:box-shadow .2s}
-.cl-item:hover{box-shadow:var(--shadow)}
-.cl-n{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px;font-family:var(--ff-mono)}
-.cl-txt{font-size:13.5px;line-height:1.75;color:var(--text)}
-
-/* ════════════════════════════════
-   BIBLIOGRAFÍA APA
-════════════════════════════════ */
-.apa-list{list-style:none;margin:14px 0}
-.apa-item{
-  padding:14px 16px 14px 40px;text-indent:-26px;
-  font-size:13px;line-height:1.8;color:var(--text);
-  border-bottom:1px solid var(--border);
-}
-.apa-item:last-child{border-bottom:none}
-.apa-n{font-family:var(--ff-mono);font-size:10px;color:var(--amber);font-weight:700;margin-right:6px}
-
-/* ════════════════════════════════
-   FOOTER
-════════════════════════════════ */
-.ftr{background:var(--navy);color:rgba(255,255,255,.5);text-align:center;padding:22px;font-size:12px;line-height:1.7}
-.ftr strong{color:#fff}
-
-/* ════════════════════════════════
-   SEPARADOR ENTRE SECCIONES
-════════════════════════════════ */
-.divider{height:3px;background:linear-gradient(90deg,var(--amber3),var(--amber),var(--amber3));margin:0}
-
-/* ════════════════════════════════
-   PRINT / PDF STYLES
-════════════════════════════════ */
-@media print{
-  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-  body{background:#fff!important}
-.doc{max-width:100%;padding:0}
-  .cover{min-height:auto;page-break-after:always}
-  .sec-wrap{page-break-inside:avoid}
-  .photo-card,.law-card,.obj-item{page-break-inside:avoid}
-  .infog{page-break-inside:avoid}
-  @page{margin:10mm;size:A4}
+    radial-gradient(ellipse 70% 50% at 15% 0%,rgba(184,134,11,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 60% at 85% 100%,rgba(39,174,96,.05) 0%,transparent 60%);
 }
 
-/* ════════════════════════════════
-   RESPONSIVE
-════════════════════════════════ */
-@media(max-width:640px){
-  .sec-body,.sec-head,.cover-header,.cover-body,.cover-footer{padding:24px 20px}
-  .cover-meta{grid-template-columns:1fr 1fr}
-  .infog-exp-stats{grid-template-columns:repeat(2,1fr)}
+/* ─── HEADER ─── */
+header{
+  position:relative;z-index:1;
+  background:linear-gradient(135deg,#fff9ee,#fffdf7);
+  border-bottom:2px solid var(--border);
+  text-align:center;padding:44px 20px 32px;
+  box-shadow:0 2px 12px rgba(184,134,11,.08);
+}
+.crown{font-size:2.2rem;margin-bottom:10px;filter:drop-shadow(0 2px 6px rgba(184,134,11,.3));}
+header h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.8rem,4.5vw,3rem);font-weight:900;
+  background:linear-gradient(135deg,var(--gold),var(--gold2),#c8960c);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1.1;margin-bottom:8px;
+}
+header p{color:var(--muted);font-size:.9rem;letter-spacing:.05em;}
+
+/* ─── TABS ─── */
+.tabs{
+  display:flex;justify-content:center;gap:8px;
+  padding:20px 16px 0;position:relative;z-index:1;
+}
+.tab{
+  background:var(--bg2);border:1.5px solid var(--border2);
+  color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;
+  padding:10px 26px;border-radius:40px;cursor:pointer;transition:all .2s;
+}
+.tab:hover{border-color:var(--gold);color:var(--gold);}
+.tab.active{
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  border-color:transparent;color:#fff;font-weight:600;
+  box-shadow:0 3px 14px rgba(184,134,11,.25);
+}
+
+/* ─── PANELS ─── */
+.panel{display:none;position:relative;z-index:1;padding:28px 16px 60px;max-width:1100px;margin:0 auto;}
+.panel.active{display:block;}
+
+/* ─── STATS ─── */
+.stats{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:26px;}
+.stat{
+  background:var(--bg2);border:1.5px solid var(--border);
+  border-radius:12px;padding:12px 20px;text-align:center;min-width:100px;
+  box-shadow:var(--sh);
+}
+.stat-n{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;}
+.stat-l{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+.stat-n.green{color:var(--avail-text);}
+.stat-n.red{color:var(--ocup-text);}
+.stat-n.blue{color:var(--paid-text);}
+.stat-n.grey{color:var(--canc-text);}
+.stat-n.gold{color:var(--gold);}
+
+/* ─── LEGEND ─── */
+.legend{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:20px;}
+.leg{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--muted);}
+.leg-dot{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
+
+/* ─── SEARCH ─── */
+.search-wrap{display:flex;gap:8px;max-width:380px;margin:0 auto 24px;}
+.search-wrap input{
+  flex:1;background:var(--bg2);border:1.5px solid var(--border);
+  color:var(--text);border-radius:10px;padding:11px 14px;font-size:.9rem;
+  font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;
+}
+.search-wrap input:focus{border-color:var(--gold);}
+.search-wrap button{
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  border:none;border-radius:10px;color:#fff;
+  font-weight:600;font-size:.85rem;padding:11px 18px;cursor:pointer;font-family:'DM Sans',sans-serif;
+}
+
+/* ─── GRID ─── */
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:7px;}
+.ticket{
+  aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-radius:10px;border:1.5px solid;
+  font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;
+  cursor:pointer;transition:transform .13s,box-shadow .13s;
+  position:relative;overflow:hidden;user-select:none;
+}
+.ticket::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.45) 0%,transparent 55%);
+  pointer-events:none;
+}
+.ticket:hover{transform:scale(1.07);z-index:2;}
+.ticket.DISPONIBLE{background:var(--avail-bg);border-color:var(--avail-border);color:var(--avail-text);}
+.ticket.DISPONIBLE:hover{box-shadow:0 0 14px rgba(39,174,96,.35);}
+.ticket.OCUPADO{background:var(--ocup-bg);border-color:var(--ocup-border);color:var(--ocup-text);cursor:not-allowed;}
+.ticket.PAGADO{background:var(--paid-bg);border-color:var(--paid-border);color:var(--paid-text);cursor:default;}
+.ticket.CANCELADO{background:var(--canc-bg);border-color:var(--canc-border);color:var(--canc-text);cursor:default;opacity:.55;}
+.ticket-badge{font-size:.44rem;letter-spacing:.06em;text-transform:uppercase;font-family:'DM Sans',sans-serif;font-weight:600;margin-top:2px;opacity:.7;}
+
+/* ─── MODAL OVERLAY ─── */
+.overlay{
+  position:fixed;inset:0;background:rgba(42,32,16,.45);
+  backdrop-filter:blur(5px);
+  display:flex;align-items:center;justify-content:center;
+  z-index:100;opacity:0;pointer-events:none;
+  transition:opacity .2s;padding:16px;
+}
+.overlay.open{opacity:1;pointer-events:all;}
+
+/* ─── MODAL ─── */
+.modal{
+  background:var(--bg2);border:1.5px solid var(--border);
+  border-radius:18px;width:100%;max-width:430px;
+  box-shadow:0 12px 50px rgba(0,0,0,.18);
+  transform:translateY(20px) scale(.97);
+  transition:transform .24s cubic-bezier(.34,1.56,.64,1);
+  overflow:hidden;
+}
+.overlay.open .modal{transform:none;}
+
+.modal-header{
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  padding:20px 22px 16px;display:flex;align-items:center;gap:12px;
+}
+.modal-header .icon{font-size:1.5rem;}
+.modal-header h2{font-family:'Playfair Display',serif;font-size:1.25rem;color:#fff;font-weight:900;}
+.modal-header p{font-size:.76rem;color:rgba(255,255,255,.75);margin-top:2px;}
+
+.modal-body{padding:22px;}
+
+/* confirm */
+.confirm-q{font-size:.95rem;color:var(--text);text-align:center;margin-bottom:22px;line-height:1.55;}
+.confirm-q span{color:var(--gold);font-weight:700;}
+.btn-row{display:flex;gap:10px;}
+.btn{
+  flex:1;padding:12px 8px;border-radius:9px;border:none;
+  font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .18s;
+}
+.btn-yes{background:var(--surface);border:1.5px solid var(--border2);color:var(--muted);}
+.btn-yes:hover{background:var(--canc-bg);border-color:var(--canc-border);}
+.btn-no{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff;box-shadow:0 3px 12px rgba(184,134,11,.25);}
+.btn-no:hover{filter:brightness(1.08);}
+
+/* form */
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;font-weight:600;}
+.field input{
+  width:100%;background:var(--bg3);border:1.5px solid var(--border);
+  color:var(--text);border-radius:9px;padding:11px 13px;font-size:.9rem;
+  font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;
+}
+.field input:focus{border-color:var(--gold);}
+.field input[type=file]{padding:7px 13px;cursor:pointer;}
+.file-hint{font-size:.7rem;color:var(--muted);margin-top:4px;}
+.submit-btn{
+  width:100%;padding:13px;border-radius:9px;border:none;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#fff;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.92rem;
+  cursor:pointer;transition:all .18s;margin-top:2px;
+}
+.submit-btn:hover{filter:brightness(1.08);box-shadow:0 4px 16px rgba(184,134,11,.3);}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;}
+
+/* success / cancelled views */
+.success-view{text-align:center;padding:6px 0;}
+.icon-circle{
+  width:88px;height:88px;margin:0 auto 14px;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:2.5rem;animation:pop .4s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes pop{from{transform:scale(0);}to{transform:scale(1);}}
+.icon-circle.gold{background:linear-gradient(135deg,#fff3cc,#ffe080);box-shadow:0 0 30px rgba(184,134,11,.25);}
+.icon-circle.green{background:linear-gradient(135deg,#e8faf0,#c0f0d8);box-shadow:0 0 30px rgba(39,174,96,.2);}
+
+/* Imagen de pago */
+.pay-img-wrap{
+  margin:10px auto 16px;
+  width:140px;height:140px;border-radius:14px;overflow:hidden;
+  border:2px solid var(--border);box-shadow:var(--sh);
+}
+.pay-img-wrap img{width:100%;height:100%;object-fit:cover;}
+.pay-img-wrap a{display:block;width:100%;height:100%;}
+
+.success-view h3{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--gold);margin-bottom:7px;}
+.success-view p{color:var(--muted);font-size:.86rem;line-height:1.6;}
+.close-btn{
+  margin-top:18px;width:100%;padding:11px;border-radius:9px;
+  border:1.5px solid var(--border2);background:transparent;
+  color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.86rem;cursor:pointer;transition:all .18s;
+}
+.close-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ─── QUERY PANEL ─── */
+.query-card{
+  background:var(--bg2);border:1.5px solid var(--border);
+  border-radius:16px;padding:26px;max-width:480px;margin:0 auto;
+  box-shadow:var(--sh);
+}
+.query-card h3{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--gold);margin-bottom:18px;text-align:center;}
+.result-card{
+  background:var(--bg3);border-radius:11px;padding:18px;margin-top:18px;
+  border:1.5px solid var(--border);display:none;
+}
+.result-card.show{display:block;}
+.result-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:7px 0;border-bottom:1px solid var(--border);font-size:.86rem;
+}
+.result-row:last-child{border-bottom:none;}
+.result-row .key{color:var(--muted);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;}
+.result-row .val{font-weight:600;color:var(--text);}
+.badge{
+  padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;
+}
+.badge.DISPONIBLE{background:var(--avail-bg);color:var(--avail-text);}
+.badge.OCUPADO{background:var(--ocup-bg);color:var(--ocup-text);}
+.badge.PAGADO{background:var(--paid-bg);color:var(--paid-text);}
+.badge.CANCELADO{background:var(--canc-bg);color:var(--canc-text);}
+
+.upload-section{
+  margin-top:14px;background:#fffdf5;border-radius:10px;
+  padding:14px;border:1.5px dashed var(--gold2);
+}
+.upload-section p{font-size:.8rem;color:var(--muted);margin-bottom:10px;}
+
+/* ─── TOAST ─── */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);
+  background:var(--bg2);border:1.5px solid var(--border2);
+  border-radius:12px;padding:13px 22px;font-size:.86rem;color:var(--text);
+  box-shadow:0 6px 24px rgba(0,0,0,.13);z-index:200;
+  transition:transform .28s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;
+}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{border-color:var(--avail-border);color:var(--avail-text);}
+.toast.error{border-color:var(--ocup-border);color:var(--ocup-text);}
+
+/* ─── LOADER ─── */
+.loader{text-align:center;padding:50px;color:var(--muted);}
+.spinner{
+  width:36px;height:36px;margin:0 auto 14px;
+  border:3px solid var(--border);border-top-color:var(--gold);
+  border-radius:50%;animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:480px){
+  #grid{grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:5px;}
+  .ticket{font-size:.88rem;}
+  .btn-row{flex-direction:column;}
 }
 </style>
 </head>
 <body>
 
+<header>
+  <div class="crown">👑</div>
+  <h1>El Gran Sorteo</h1>
+  <p>Sistema Oficial de Gestión de Rifas</p>
+</header>
 
-<div class="doc">
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('grid-panel',this)">🎟️ Tablero</button>
+  <button class="tab" onclick="switchTab('query-panel',this)">🔍 Consultar Número</button>
+</div>
 
-<!-- ══════════════════════════════════════
-     PORTADA
-══════════════════════════════════════ -->
-<div class="cover">
-  <div class="cover-accent"></div>
-  <div class="cover-inner">
-    <div class="cover-header">
-      <div class="cover-sena">
-        <div class="cover-sena-badge"><i class="fa-solid fa-book-open-reader"></i></div>
-        <div class="cover-sena-txt">
-          <strong>SENA</strong>
-          <span>Servicio Nacional de Aprendizaje</span>
+<!-- ── GRID PANEL ── -->
+<div id="grid-panel" class="panel active">
+  <div class="stats" id="stats"></div>
+  <div class="legend">
+    <div class="leg"><div class="leg-dot" style="background:#27ae60"></div>Disponible</div>
+    <div class="leg"><div class="leg-dot" style="background:#e74c3c"></div>Ocupado</div>
+    <div class="leg"><div class="leg-dot" style="background:#2980b9"></div>Pagado</div>
+    <div class="leg"><div class="leg-dot" style="background:#aaa"></div>Cancelado</div>
+  </div>
+  <div class="search-wrap">
+    <input type="number" id="searchNum" placeholder="Buscar número…" min="1"/>
+    <button onclick="highlightTicket()">Buscar</button>
+  </div>
+  <div id="grid">
+    <div class="loader"><div class="spinner"></div>Cargando tickets…</div>
+  </div>
+</div>
+
+<!-- ── QUERY PANEL ── -->
+<div id="query-panel" class="panel">
+  <div class="query-card">
+    <h3>🔍 Consultar mi Número</h3>
+    <div class="field">
+      <label>Número de Rifa</label>
+      <input type="number" id="queryNum" placeholder="Ej: 42" min="1"/>
+    </div>
+    <button class="submit-btn" onclick="queryTicket()">Consultar Estado</button>
+
+    <div class="result-card" id="resultCard">
+      <div class="result-row"><span class="key">Número</span><span class="val" id="r-numero">—</span></div>
+      <div class="result-row"><span class="key">Estado</span><span class="val" id="r-estado">—</span></div>
+      <div class="result-row"><span class="key">Nombre</span><span class="val" id="r-nombre">—</span></div>
+      <div class="result-row"><span class="key">Cédula</span><span class="val" id="r-cedula">—</span></div>
+      <div class="result-row"><span class="key">Documento</span><span class="val" id="r-doc">—</span></div>
+      <div class="result-row"><span class="key">Registro</span><span class="val" id="r-fecha">—</span></div>
+
+      <!-- Carga de comprobante si estado OCUPADO -->
+      <div class="upload-section" id="uploadSection" style="display:none">
+        <p>💳 ¿Ya realizaste el pago? Adjunta tu comprobante:</p>
+        <div class="field">
+          <input type="file" id="receiptFile" accept="image/*,.pdf"/>
+          <div class="file-hint">JPG · PNG · PDF · Máx 5 MB</div>
+        </div>
+        <button class="submit-btn" id="uploadBtn" onclick="uploadReceipt()">📤 Cargar Comprobante</button>
+      </div>
+
+      <!-- Link si ya tiene comprobante -->
+      <div id="compLink" style="display:none;margin-top:10px;text-align:center;font-size:.8rem;">
+        <a id="comprobLink" href="#" target="_blank" style="color:var(--paid-text)">Ver comprobante cargado ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL ── -->
+<div class="overlay" id="overlay" onclick="overlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <span class="icon">🎟️</span>
+      <div>
+        <h2 id="mTitle">Ticket #000</h2>
+        <p id="mSub">Número de rifa seleccionado</p>
+      </div>
+    </div>
+    <div class="modal-body">
+
+      <!-- CONFIRM -->
+      <div id="view-confirm">
+        <p class="confirm-q">Número <span id="mNum">—</span><br/>¿Deseas <span>cancelar</span> este número de rifa?</p>
+        <div class="btn-row">
+          <button class="btn btn-yes" onclick="onYes()">Sí, cancelar</button>
+          <button class="btn btn-no" onclick="onNo()">No, registrarme ✍️</button>
         </div>
       </div>
-      <div class="cover-code">GA3-220201501-AA4-EV01</div>
-    </div>
 
-    <div class="cover-body">
-      <div class="cover-tag"><i class="fa-solid fa-book"></i>&nbsp; Evidencia de Producto · Bitácora</div>
-      <h1 class="cover-h1">Bitácora de<br><em>Procesos Desarrollados</em><br>en la Competencia</h1>
-      <p class="cover-sub">Recopilación documental del aprendizaje adquirido en la competencia <em>"La ciencia de las cosas"</em>, desarrollada mediante la estrategia didáctica de experimentación — Guía GA3</p>
-      <div class="cover-rule"></div>
-      <div class="cover-meta">
-        <div class="cmi"><label><i class="fa-solid fa-user-graduate"></i> Aprendiz</label><span>Robinson Esneyder Zapata Anzola</span></div>
-        <div class="cmi"><label><i class="fa-solid fa-id-card"></i> Ficha</label><span>3070115</span></div>
-        <div class="cmi"><label><i class="fa-solid fa-building-columns"></i> Programa</label><span>Tecnología en ADSO</span></div>
-        <div class="cmi"><label><i class="fa-solid fa-book-open"></i> Actividad</label><span>AA4 · Bitácora de Procesos</span></div>
-        <div class="cmi"><label><i class="fa-solid fa-hashtag"></i> Código</label><span>GA3-220201501-AA4-EV01</span></div>
-        <div class="cmi"><label><i class="fa-regular fa-calendar"></i> Fecha</label><span>Abril 2026</span></div>
+      <!-- FORM -->
+      <div id="view-form" style="display:none">
+        <div class="field"><label>Nombre Completo</label><input type="text" id="f-nombre" placeholder="Tu nombre completo"/></div>
+        <div class="field"><label>Cédula</label><input type="text" id="f-cedula" placeholder="Número de cédula"/></div>
+        <div class="field"><label>Número de Documento</label><input type="text" id="f-doc" placeholder="Número de documento"/></div>
+        <button class="submit-btn" id="submitBtn" onclick="submitForm()">✅ Confirmar Registro</button>
       </div>
-    </div>
 
-    <div class="cover-footer">
-      <span><i class="fa-solid fa-location-dot"></i>&nbsp; Colombia · 2026</span>
-      <span>Normas APA 7.ª edición</span>
-      <span>Formación Profesional Integral · SENA</span>
-    </div>
-  </div>
-  <div class="cover-bottom-bar"></div>
-</div>
-<div class="divider"></div>
+      <!-- CANCELADO SUCCESS (con imagen de pago) -->
+      <div id="view-success" style="display:none">
+        <div class="success-view">
+          <div class="icon-circle gold">🔑</div>
+          <h3>Solicitud de Cancelación</h3>
+          <p>Tu número ha sido marcado como cancelado.<br/>Gracias por participar.</p>
+          <button class="close-btn" onclick="closeModal()">Cerrar</button>
+        </div>
+      </div>
 
-<!-- ══════════════════════════════════════
-     ÍNDICE
-══════════════════════════════════════ -->
-<div class="sec-wrap">
-  <div class="sec-head">
-    <div class="sec-ico"><i class="fa-solid fa-list-ul"></i></div>
-    <div class="sec-head-txt">
-      <div class="sec-label">Tabla de contenido</div>
-      <h2>Índice General</h2>
-    </div>
-  </div>
-  <div class="sec-body">
-    <div class="tw">
-      <table>
-        <thead><tr><th>N.°</th><th>Sección</th><th style="width:70px;text-align:center">Pág.</th></tr></thead>
-        <tbody>
-          <tr><td><span class="bk bk-n">1</span></td><td><strong>Introducción</strong></td><td style="text-align:center;font-family:var(--ff-mono)">3</td></tr>
-          <tr><td><span class="bk bk-n">2</span></td><td><strong>Objetivos</strong> — General y Específicos</td><td style="text-align:center;font-family:var(--ff-mono)">4</td></tr>
-          <tr><td><span class="bk bk-n">3</span></td><td><strong>Justificación</strong></td><td style="text-align:center;font-family:var(--ff-mono)">5</td></tr>
-          <tr><td><span class="bk bk-n">4</span></td><td><strong>Antecedentes</strong></td><td style="text-align:center;font-family:var(--ff-mono)">6</td></tr>
-          <tr><td><span class="bk bk-n">5</span></td><td><strong>Desarrollo</strong></td><td style="text-align:center;font-family:var(--ff-mono)">7</td></tr>
-          <tr><td style="padding-left:28px"><span class="bk bk-b">5.1</span></td><td>Definición personal de física y leyes fundamentales</td><td style="text-align:center;font-family:var(--ff-mono)">7</td></tr>
-          <tr><td style="padding-left:28px"><span class="bk bk-b">5.2</span></td><td>URL / Video expositivo</td><td style="text-align:center;font-family:var(--ff-mono)">10</td></tr>
-          <tr><td style="padding-left:44px"><span class="bk bk-gr">5.2.1</span></td><td>Descripción del contenido del video y material de apoyo</td><td style="text-align:center;font-family:var(--ff-mono)">11</td></tr>
-          <tr><td style="padding-left:28px"><span class="bk bk-b">5.3</span></td><td>Informe de laboratorio (resumen ejecutivo)</td><td style="text-align:center;font-family:var(--ff-mono)">12</td></tr>
-          <tr><td style="padding-left:28px"><span class="bk bk-b">5.4</span></td><td>Registro fotográfico del experimento</td><td style="text-align:center;font-family:var(--ff-mono)">14</td></tr>
-          <tr><td style="padding-left:28px"><span class="bk bk-b">5.5</span></td><td>Infografía — "La ciencia de las cosas"</td><td style="text-align:center;font-family:var(--ff-mono)">17</td></tr>
-          <tr><td><span class="bk bk-n">6</span></td><td><strong>Conclusiones</strong></td><td style="text-align:center;font-family:var(--ff-mono)">21</td></tr>
-          <tr><td><span class="bk bk-n">7</span></td><td><strong>Bibliografía</strong> (APA 7.ª edición)</td><td style="text-align:center;font-family:var(--ff-mono)">23</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-<div class="divider"></div>
-
-<!-- ══════════════════════════════════════
-     1. INTRODUCCIÓN
-══════════════════════════════════════ -->
-<div class="sec-wrap">
-  <div class="sec-head">
-    <div class="sec-ico"><i class="fa-solid fa-lightbulb"></i></div>
-    <div class="sec-head-txt">
-      <div class="sec-label">Sección 1</div>
-      <h2>Introducción</h2>
-      <p>Contextualización y propósito del documento</p>
-    </div>
-  </div>
-  <div class="sec-body">
-    <p class="p">La presente bitácora corresponde a la evidencia de producto <strong>GA3-220201501-AA4-EV01</strong>, elaborada en el marco del programa de formación <em>Tecnología en Análisis y Desarrollo de Software</em> del Servicio Nacional de Aprendizaje (SENA), ficha <strong>3070115</strong>. El documento tiene como propósito recopilar, organizar y reflexionar sobre el proceso de aprendizaje desarrollado a lo largo de la guía de aprendizaje GA3, cuya estrategia didáctica central es la <strong>experimentación</strong>.</p>
-    <p class="p">La física, como ciencia fundamental que estudia la naturaleza y las leyes que gobiernan el comportamiento de la materia, la energía y sus interacciones, constituye la base conceptual de esta competencia. A través de la guía, se abordaron los principios físicos más relevantes para el contexto productivo y social, con especial énfasis en la <strong>conservación de la energía mecánica</strong>, verificada experimentalmente mediante un experimento de plano inclinado construido con materiales del hogar.</p>
-    <p class="p">Una bitácora, como instrumento pedagógico, va más allá del registro de actividades: permite al aprendiz reflexionar sobre su propio proceso, identificar avances, dificultades y estrategias de superación (Schön, 1983). En este sentido, el presente documento integra los resultados técnicos del laboratorio, la evolución conceptual del aprendiz y las evidencias multimediales generadas durante la competencia.</p>
-    <div class="callout blue">
-      <i class="fa-solid fa-quote-left"></i>
-      <div><strong>"La educación no es preparación para la vida; la educación es la vida misma."</strong><br><span style="font-size:12px">— Dewey (1916), como se citó en Ministerio de Educación Nacional (2006). Esta idea orienta el enfoque experiencial de la guía GA3.</span></div>
-    </div>
-    <p class="p">El documento está estructurado conforme a los lineamientos del Anexo_Bitacora del SENA e incorpora: portada, introducción, objetivos, justificación, antecedentes, desarrollo completo (conceptualización, video, laboratorio, registro fotográfico e infografía), conclusiones y bibliografía en norma APA 7.ª edición.</p>
-  </div>
-</div>
-<div class="divider"></div>
-
-<!-- ══════════════════════════════════════
-     2. OBJETIVOS
-══════════════════════════════════════ -->
-<div class="sec-wrap">
-  <div class="sec-head">
-    <div class="sec-ico"><i class="fa-solid fa-bullseye"></i></div>
-    <div class="sec-head-txt">
-      <div class="sec-label">Sección 2</div>
-      <h2>Objetivos</h2>
-      <p>Propósitos que orientaron el proceso de aprendizaje</p>
-    </div>
-  </div>
-  <div class="sec-body">
-    <h3 class="sub"><i class="fa-solid fa-star" style="color:var(--amber)"></i> Objetivo General</h3>
-    <div class="obj-gen">
-      <span class="obj-gen-tag"><i class="fa-solid fa-star"></i>&nbsp; OBJETIVO GENERAL</span>
-      <p>Recopilar y reflexionar sobre el proceso de aprendizaje desarrollado en la competencia de aplicación de principios físicos al contexto productivo y social, mediante la elaboración de una bitácora documental que integre la conceptualización teórica, la experimentación práctica y la infografía del componente formativo "La ciencia de las cosas", como evidencia del aprendizaje significativo alcanzado en la ficha 3070115.</p>
-    </div>
-
-    <h3 class="sub"><i class="fa-solid fa-list-check" style="color:var(--amber)"></i> Objetivos Específicos</h3>
-    <div class="obj-grid">
-      <div class="obj-item" data-n="01">
-        <div class="obj-item-tag"><i class="fa-solid fa-atom"></i> Específico 1</div>
-        <p>Construir una definición personal de la física e identificar sus principios y leyes fundamentales, relacionándolos con aplicaciones reales en el contexto productivo y social colombiano.</p>
-      </div>
-      <div class="obj-item" data-n="02">
-        <div class="obj-item-tag"><i class="fa-solid fa-video"></i> Específico 2</div>
-        <p>Producir un video expositivo que explique los conceptos y principios físicos abordados, demostrando comprensión y capacidad de comunicación científica ante una audiencia.</p>
-      </div>
-      <div class="obj-item" data-n="03">
-        <div class="obj-item-tag"><i class="fa-solid fa-flask"></i> Específico 3</div>
-        <p>Diseñar y ejecutar un experimento de plano inclinado para verificar el principio de conservación de la energía mecánica, documentando el proceso con rigor científico.</p>
-      </div>
-      <div class="obj-item" data-n="04">
-        <div class="obj-item-tag"><i class="fa-solid fa-camera"></i> Específico 4</div>
-        <p>Registrar fotográficamente cada etapa del experimento, evidenciando el proceso práctico y la relación entre la teoría física y la experimentación cotidiana.</p>
-      </div>
-      <div class="obj-item" data-n="05">
-        <div class="obj-item-tag"><i class="fa-solid fa-image"></i> Específico 5</div>
-        <p>Elaborar una infografía que sintetice visualmente el contenido del componente "La ciencia de las cosas", destacando leyes físicas y sus aplicaciones productivas.</p>
-      </div>
-      <div class="obj-item" data-n="06">
-        <div class="obj-item-tag"><i class="fa-solid fa-pen-to-square"></i> Específico 6</div>
-        <p>Formular conclusiones críticas sobre el aprendizaje adquirido, identificando la utilidad de los principios físicos para el campo del desarrollo de software y la tecnología.</p>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="divider"></div>
-
-<!-- ══════════════════════════════════════
-     3. JUSTIFICACIÓN
-══════════════════════════════════════ -->
-<div class="sec-wrap">
-  <div class="sec-head">
-    <div class="sec-ico"><i class="fa-solid fa-scale-balanced"></i></div>
-    <div class="sec-head-txt">
-      <div class="sec-label">Sección 3</div>
-      <h2>Justificación</h2>
-      <p>Razones que sustentan la elaboración de esta bitácora</p>
-    </div>
-  </div>
-  <div class="sec-body">
-    <p class="p">La elaboración de esta bitácora responde a razones de orden pedagógico, formativo y profesional. Desde el enfoque por competencias del SENA, la <strong>evidencia de desempeño</strong> es el mecanismo mediante el cual el aprendiz demuestra no solo adquisición de conocimientos, sino la capacidad de aplicarlos, reflexionar sobre ellos y comunicarlos de forma estructurada (SENA, 2013). La bitácora cumple precisamente esta función metacognitiva.</p>
-    <p class="p">El estudio de la física —y en particular los principios de conservación de la energía— tiene relevancia directa para el programa de <em>Tecnología en ADSO</em>. Los sistemas de cómputo, los centros de datos y la infraestructura tecnológica están sujetos a leyes físicas que determinan su eficiencia y consumo energético. Comprender estos fundamentos permite al tecnólogo tomar decisiones más informadas en el diseño de soluciones (Serway y Jewett, 2019).</p>
-    <p class="p">La estrategia de <strong>aprendizaje experiencial</strong> (Kolb, 1984) empleada —experimentar, reflexionar, conceptualizar, aplicar— favorece el pensamiento crítico, la resolución de problemas y el trabajo sistemático, competencias transversales esenciales para el profesional TI del siglo XXI.</p>
-    <div class="callout amber">
-      <i class="fa-solid fa-chart-line"></i>
-      <div>Según el <strong>Informe de Competitividad Global 2023</strong> (Foro Económico Mundial, 2023), los países con mayor capacidad innovadora son aquellos cuya fuerza laboral combina fundamentos científicos sólidos con competencias digitales avanzadas. La formación integral del aprendiz SENA responde directamente a esta necesidad estratégica.</div>
-    </div>
-    <p class="p">Finalmente, la bitácora evidencia el cumplimiento de los resultados de aprendizaje de la guía GA3 y sirve como instrumento de evaluación auténtica que trasciende la memorización para centrarse en la comprensión profunda y la aplicación práctica del conocimiento físico.</p>
-  </div>
-</div>
-<div class="divider"></div>
-
-<!-- ══════════════════════════════════════
-     4. ANTECEDENTES
-══════════════════════════════════════ -->
-<div class="sec-wrap">
-  <div class="sec-head">
-    <div class="sec-ico"><i class="fa-solid fa-clock-rotate-left"></i></div>
-    <div class="sec-head-txt">
-      <div class="sec-label">Sección 4</div>
-      <h2>Antecedentes</h2>
-      <p>Contexto histórico y formativo previo al proceso</p>
-    </div>
-  </div>
-  <div class="sec-body">
-    <p class="p">Para comprender el alcance del aprendizaje desarrollado, es necesario situar los conceptos físicos abordados en su contexto histórico y en relación con la formación previa del aprendiz.</p>
-    <h3 class="sub"><i class="fa-solid fa-hourglass" style="color:var(--amber)"></i> Línea de Tiempo Histórica</h3>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-yr">Siglo IV a.C.</div>
-        <div class="tl-title">Aristóteles y el movimiento natural</div>
-        <div class="tl-body">Propuso que los cuerpos más pesados caen más rápido, estableciendo las primeras explicaciones filosóficas del movimiento que dominaron el pensamiento occidental por casi dos milenios (Clagett, 1959, como se citó en Serway y Jewett, 2019).</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-yr">1564 – 1642</div>
-        <div class="tl-title">Galileo Galilei — El plano inclinado como herramienta científica</div>
-        <div class="tl-body">Galileo refutó a Aristóteles mediante experimentos en planos inclinados —exactamente el dispositivo replicado en esta bitácora— demostrando que todos los cuerpos caen con igual aceleración. Sentó las bases del método científico experimental (Drake, 1978).</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-yr">1687</div>
-        <div class="tl-title">Isaac Newton — Principia Mathematica</div>
-        <div class="tl-body">Newton publicó sus tres leyes del movimiento y la ley de gravitación universal, proporcionando el marco matemático para el análisis cuantitativo del movimiento y el trabajo (Newton, 1687/1999). La segunda ley (F = ma) da sustento teórico al cálculo de la energía cinética.</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-yr">1847</div>
-        <div class="tl-title">Hermann von Helmholtz — Conservación de la Energía</div>
-        <div class="tl-body">Formuló el principio de conservación de la energía estableciendo que la energía total de un sistema aislado permanece constante. Este principio fue el objeto central del experimento desarrollado en esta competencia (Helmholtz, 1847, como se citó en Serway y Jewett, 2019).</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-yr">1905</div>
-        <div class="tl-title">Albert Einstein — Equivalencia masa-energía</div>
-        <div class="tl-body">Amplió la comprensión de la energía con E = mc², mostrando que la masa es una forma de energía, extendiendo el principio de conservación al ámbito relativista (Einstein, 1905, como se citó en Tipler y Llewellyn, 2012).</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-yr">Siglo XXI</div>
-        <div class="tl-title">Energías renovables y eficiencia digital</div>
-        <div class="tl-body">La conservación de energía es hoy central en el diseño de sistemas sostenibles. Colombia avanzó con la Ley 1715 de 2014 sobre energías renovables no convencionales (Congreso de Colombia, 2014). Los centros de datos eficientes aplican directamente estos principios.</div>
-      </div>
-    </div>
-
-    <h3 class="sub"><i class="fa-solid fa-user" style="color:var(--amber)"></i> Antecedentes Formativos del Aprendiz</h3>
-    <p class="p">Previo al inicio de la competencia, el aprendiz Robinson Esneyder Zapata Anzola había abordado conceptos básicos de física general en la educación media y fundamentos matemáticos que sientan las bases para el análisis cuantitativo de fenómenos físicos. Sin embargo, la articulación formal de los principios físicos con el contexto del desarrollo de software y la tecnología constituyó un aprendizaje nuevo y significativo que esta competencia posibilitó mediante la experimentación directa.</p>
-  </div>
-</div>
-<div class="divider"></div>
-
-<!-- ══════════════════════════════════════
-     5. DESARROLLO
-══════════════════════════════════════ -->
-<div class="sec-wrap">
-  <div class="sec-head">
-    <div class="sec-ico"><i class="fa-solid fa-flask-vial"></i></div>
-    <div class="sec-head-txt">
-      <div class="sec-label">Sección 5</div>
-      <h2>Desarrollo</h2>
-      <p>Contenido central del aprendizaje — conceptos, evidencias y experimentos</p>
-    </div>
-  </div>
-  <div class="sec-body">
-
-    <!-- 5.1 DEFINICIÓN PERSONAL -->
-    <h3 class="sub"><i class="fa-solid fa-user-pen" style="color:var(--amber)"></i> 5.1 Definición Personal de la Física y sus Leyes Fundamentales</h3>
-
-    <div class="def-box">
-      <div class="def-box-tag"><i class="fa-solid fa-pen-nib"></i>&nbsp; Definición personal — Robinson E. Zapata Anzola · Ficha 3070115</div>
-      <p>"La física es la ciencia que nos permite entender por qué el mundo funciona como funciona. No es solo un conjunto de fórmulas: es el lenguaje con el que la naturaleza nos habla. Desde que una esfera rueda por un plano hasta que un centro de datos consume energía, la física está presente. Para mí, como aprendiz de software, entender que la energía se conserva, que cada acción tiene una reacción igual y opuesta, y que la materia obedece leyes universales, me da una base para pensar con rigor, diseñar con eficiencia y resolver problemas con criterio científico."</p>
-      <div class="def-box-author"><i class="fa-solid fa-user-circle"></i>&nbsp; Robinson Esneyder Zapata Anzola — SENA Ficha 3070115 — Abril, 2026</div>
-    </div>
-
-    <h4 class="sub2"><i class="fa-solid fa-gavel"></i>&nbsp; Principios y Leyes Fundamentales</h4>
-    <p class="p">A continuación se presentan las principales leyes físicas estudiadas durante la competencia, con su formulación matemática, descripción y aplicación al contexto productivo y social (Serway y Jewett, 2019; Young y Freedman, 2018):</p>
-
-    <div class="law-grid">
-      <div class="law-card n1">
-        <span class="law-tag">1.ª Ley de Newton</span>
-        <div class="law-name">Ley de la Inercia</div>
-        <div class="law-formula">ΣF = 0 → v = cte</div>
-        <div class="law-body">Un cuerpo en reposo o MRU permanece así salvo que una fuerza neta actúe sobre él.</div>
-        <div class="law-app"><strong>Aplicación:</strong> Sistemas de frenos en vehículos eléctricos; diseño de estructuras en reposo.</div>
-      </div>
-      <div class="law-card n2">
-        <span class="law-tag">2.ª Ley de Newton</span>
-        <div class="law-name">Ley Fundamental de la Dinámica</div>
-        <div class="law-formula">F = m · a</div>
-        <div class="law-body">La fuerza neta es proporcional a la masa e inversamente proporcional a la aceleración producida.</div>
-        <div class="law-app"><strong>Aplicación:</strong> Cálculo de cargas en montacargas, grúas y rampas industriales.</div>
-      </div>
-      <div class="law-card n3">
-        <span class="law-tag">3.ª Ley de Newton</span>
-        <div class="law-name">Acción y Reacción</div>
-        <div class="law-formula">F₁₂ = −F₂₁</div>
-        <div class="law-body">Toda acción genera una reacción de igual magnitud y dirección contraria.</div>
-        <div class="law-app"><strong>Aplicación:</strong> Propulsión de cohetes y satélites; motores a reacción.</div>
-      </div>
-      <div class="law-card td1">
-        <span class="law-tag">1.er Principio Termodinámica</span>
-        <div class="law-name">Conservación de la Energía</div>
-        <div class="law-formula">ΔU = Q − W</div>
-        <div class="law-body">La energía interna cambia igual al calor absorbido menos el trabajo realizado por el sistema.</div>
-        <div class="law-app"><strong>Aplicación:</strong> Gestión térmica de servidores y centros de datos TI.</div>
-      </div>
-      <div class="law-card td2">
-        <span class="law-tag">2.do Principio Termodinámica</span>
-        <div class="law-name">Entropía e Irreversibilidad</div>
-        <div class="law-formula">ΔS ≥ 0</div>
-        <div class="law-body">En todo proceso espontáneo la entropía del universo aumenta. Ningún sistema real es 100% eficiente.</div>
-        <div class="law-app"><strong>Aplicación:</strong> Evaluación de eficiencia en procesos industriales y digitales.</div>
-      </div>
-      <div class="law-card grav">
-        <span class="law-tag">Gravitación Universal</span>
-        <div class="law-name">Ley de Newton de la Gravedad</div>
-        <div class="law-formula">F = G·m₁·m₂/r²</div>
-        <div class="law-body">Dos masas se atraen con fuerza proporcional al producto de sus masas e inversamente proporcional al cuadrado de la distancia.</div>
-        <div class="law-app"><strong>Aplicación:</strong> Cálculo de órbitas de satélites GPS y telecomunicaciones.</div>
-      </div>
-    </div>
-
-    <h4 class="sub2"><i class="fa-solid fa-industry"></i>&nbsp; Aplicación al Contexto Productivo y Social</h4>
-    <div class="tw">
-      <table>
-        <thead><tr><th>Ley / Principio</th><th>Sector</th><th>Aplicación concreta</th><th>Impacto social</th></tr></thead>
-        <tbody>
-          <tr><td>Conservación de energía</td><td>Energía / Industria</td><td>Turbinas hidroeléctricas, motores eficientes</td><td>Reducción de costos y emisiones CO₂</td></tr>
-          <tr><td>2.ª Ley Newton (F=ma)</td><td>Construcción / Transporte</td><td>Diseño de rampas, ascensores, grúas</td><td>Seguridad estructural y laboral</td></tr>
-          <tr><td>1.er Principio Termود.</td><td>TI / Telecomunicaciones</td><td>Gestión térmica de servidores</td><td>Sostenibilidad de infraestructura digital</td></tr>
-          <tr><td>Gravitación Universal</td><td>Telecomunicaciones</td><td>Cálculo de órbitas GPS</td><td>Conectividad global y navegación</td></tr>
-          <tr><td>Ec = ½mv²</td><td>Automotriz / Eléctrico</td><td>Frenado regenerativo vehículos eléctricos</td><td>Ahorro energético y movilidad sostenible</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- 5.2 VIDEO -->
-    <h3 class="sub" style="margin-top:36px"><i class="fa-brands fa-google-drive" style="color:#4285f4"></i> 5.2 Video Expositivo</h3>
-    <p class="p">Como parte de la evidencia requerida, se elaboró y publicó un video expositivo en el que se explican los conceptos clave de la física abordados durante la competencia: tipos de energía, leyes de Newton, principio de conservación de la energía mecánica y resultados del experimento del plano inclinado. El video se encuentra alojado en Google Drive y es accesible mediante el enlace de la evidencia.</p>
-
-    <!-- ── REPRODUCTOR GOOGLE DRIVE ── -->
-    <div class="video-wrapper" id="video-block">
-      <iframe
-        src="https://drive.google.com/file/d/1lPRBZsNUzDTMxrY2CzJh-84K1-ZoIkwo/preview"
-        style="width:100%;aspect-ratio:16/9;display:block;border:none"
-        allow="autoplay; encrypted-media"
-        allowfullscreen
-        title="Física aplicada: Leyes de Newton – experimento plano inclinado con esfera">
-      </iframe>
-      <div class="video-meta" style="justify-content:space-between;flex-wrap:wrap;gap:10px">
-        <div style="display:flex;align-items:center;gap:12px;min-width:0">
-          <div style="width:38px;height:38px;border-radius:8px;background:#e8f0fe;border:1px solid #c5d8fd;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <i class="fa-brands fa-google-drive" style="color:#4285f4;font-size:17px"></i>
-          </div>
-          <div class="vm-info">
-            <strong>Física aplicada: Leyes de Newton – experimento plano inclinado con esfera</strong>
-            <a href="https://drive.google.com/file/d/1lPRBZsNUzDTMxrY2CzJh-84K1-ZoIkwo/view?usp=sharing" target="_blank">
-              drive.google.com/file/d/1lPRBZsNUzDTMxrY2CzJh-84K1-ZoIkwo/view&nbsp;<i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px"></i>
+      <!-- REGISTRO SUCCESS (con imagen de cómo pagar) -->
+      <div id="view-reg-success" style="display:none">
+        <div class="success-view">
+          <div class="icon-circle green">🎉</div>
+          <h3>¡Registro Exitoso!</h3>
+          <p>Tu número fue reservado. Para confirmar tu participación realiza el pago:</p>
+          <!-- Imagen de pago: enlace a Drive -->
+          <div class="pay-img-wrap">
+            <a href="https://drive.google.com/file/d/1NHU_dUgGdZFsvFNzwdV52nU1oHHdM6SZ/view?usp=sharing" target="_blank">
+              <img src="https://drive.google.com/thumbnail?id=1NHU_dUgGdZFsvFNzwdV52nU1oHHdM6SZ&sz=w300"
+                   alt="Información de pago"
+                   onerror="this.src='https://placehold.co/140x140/fffdf5/b8860b?text=Ver+Pago'"/>
             </a>
           </div>
-        </div>
-        <div class="vm-chips">
-          <span class="vm-chip"><i class="fa-brands fa-google-drive"></i>&nbsp; Drive</span>
-          <span class="vm-chip"><i class="fa-solid fa-atom"></i>&nbsp; Física</span>
-          <span class="vm-chip"><i class="fa-solid fa-film"></i>&nbsp; MP4</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- tabla de segmentos -->
-
-    <div class="tw">
-      <table>
-        <thead><tr><th>Segmento</th><th>Tiempo</th><th>Contenido</th></tr></thead>
-        <tbody>
-          <tr><td><span class="bk bk-n">Apertura</span></td><td style="font-family:var(--ff-mono);font-size:12px">00:00 – 00:45</td><td>Presentación del aprendiz, ficha y objetivo del video</td></tr>
-          <tr><td><span class="bk bk-b">Marco teórico</span></td><td style="font-family:var(--ff-mono);font-size:12px">00:45 – 03:00</td><td>Definición de física, tipos de energía y leyes de Newton</td></tr>
-          <tr><td><span class="bk bk-p">Experimento</span></td><td style="font-family:var(--ff-mono);font-size:12px">03:00 – 06:30</td><td>Demostración del plano inclinado, montaje y mediciones</td></tr>
-          <tr><td><span class="bk bk-y">Resultados</span></td><td style="font-family:var(--ff-mono);font-size:12px">06:30 – 08:00</td><td>Cálculo de Ep, Ec y eficiencia del sistema η = 92%</td></tr>
-          <tr><td><span class="bk bk-g">Conclusiones</span></td><td style="font-family:var(--ff-mono);font-size:12px">08:00 – 09:12</td><td>Reflexión sobre la conservación de energía y su contexto social</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="p" style="font-size:12.5px;color:var(--text2);margin-top:10px">
-      <strong>Referencia APA:</strong> Zapata Anzola, R. E. (2026, marzo). <em>Física aplicada: Leyes de Newton – experimento de plano inclinado con esfera</em> [Video]. Google Drive. https://drive.google.com/file/d/1lPRBZsNUzDTMxrY2CzJh-84K1-ZoIkwo/view?usp=sharing
-    </p>
-
-    <!-- ══════════════════════════════════════
-         5.2.1 DESCRIPCIÓN DEL CONTENIDO DEL VIDEO
-    ══════════════════════════════════════ -->
-    <h3 class="sub" style="margin-top:38px"><i class="fa-solid fa-film" style="color:var(--amber)"></i> 5.2.1 Descripción del Contenido del Video y Material de Apoyo</h3>
-    <p class="p">A continuación se describe el contenido desarrollado en el video expositivo y se presenta la presentación de diapositivas utilizada como material de apoyo durante la exposición. Ambas evidencias forman parte del proceso formativo de la competencia <em>"La ciencia de las cosas"</em> — Guía GA3.</p>
-
-    <!-- RELACIÓN PPTX → VIDEO -->
-    <h4 class="sub2"><i class="fa-solid fa-link"></i>&nbsp; Presentación utilizada en el video: Leyes de Newton</h4>
-    <p class="p">La presentación de diapositivas sobre las Leyes de Newton fue el material visual de apoyo del video expositivo. A continuación se visualiza y se describe su estructura por segmentos:</p>
-
-    <!-- Embed Google Slides -->
-    <div style="border-radius:12px;overflow:hidden;box-shadow:var(--shadow2);margin:16px 0;border:1px solid var(--border)">
-      <div style="background:var(--navy);padding:10px 18px;display:flex;align-items:center;justify-content:space-between">
-        <div style="display:flex;align-items:center;gap:10px">
-          <i class="fa-brands fa-google-drive" style="color:#4285f4;font-size:16px"></i>
-          <span style="color:#fff;font-size:13px;font-weight:600">Leyes_de_Newton.pptx</span>
-          <span style="color:rgba(255,255,255,.4);font-size:11px">· Google Slides · SENA Ficha 3070115</span>
-        </div>
-        <a href="https://docs.google.com/presentation/d/1uApXD9pAaIjqa8v5N8ZB5AOKc-odsr2O/edit?usp=sharing" target="_blank"
-           style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:5px 14px;color:rgba(255,255,255,.75);font-size:11px;font-weight:600;text-decoration:none">
-          <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px"></i> Abrir en Drive
-        </a>
-      </div>
-      <iframe
-        src="https://docs.google.com/presentation/d/1uApXD9pAaIjqa8v5N8ZB5AOKc-odsr2O/embed?start=false&loop=false&delayms=4000"
-        style="width:100%;aspect-ratio:16/9;display:block;border:none"
-        allowfullscreen
-        title="Presentación: Leyes de Newton">
-      </iframe>
-    </div>
-    <div class="tw">
-      <table>
-        <thead>
-          <tr>
-            <th>Diapositiva (PPTX)</th>
-            <th>Contenido</th>
-            <th>Segmento del video</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="bk bk-n">Slide 1</span></td>
-            <td>Portada — Física · Leyes del Movimiento · Primera Ley de Newton</td>
-            <td>Apertura (00:00 – 00:45)</td>
-          </tr>
-          <tr>
-            <td><span class="bk bk-b">Slide 2</span></td>
-            <td>Contexto histórico de las 3 leyes — Principia Mathematica (1687)</td>
-            <td>Marco teórico (00:45 – 03:00)</td>
-          </tr>
-          <tr>
-            <td><span class="bk bk-b">Slide 3–4</span></td>
-            <td>Enunciado oficial de la 1.ª Ley · Concepto de inercia · Ejemplos cotidianos</td>
-            <td>Marco teórico (00:45 – 03:00)</td>
-          </tr>
-          <tr>
-            <td><span class="bk bk-p">Slide 5</span></td>
-            <td>Demostración práctica: esfera + trapo/superficie · Pasos del experimento</td>
-            <td>Experimento (03:00 – 06:30)</td>
-          </tr>
-          <tr>
-            <td><span class="bk bk-p">Slide 6–7</span></td>
-            <td>Explicación científica: inercia, fricción mínima, tiempo de contacto, ΣF ≈ 0</td>
-            <td>Experimento (03:00 – 06:30)</td>
-          </tr>
-          <tr>
-            <td><span class="bk bk-y">Slide 8</span></td>
-            <td>Conclusiones: 4 aprendizajes clave sobre la 1.ª Ley y sus aplicaciones reales</td>
-            <td>Resultados + Conclusiones (06:30 – fin)</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- FICHA DE VALIDACIÓN TÉCNICA -->
-    <h4 class="sub2" style="margin-top:22px"><i class="fa-solid fa-id-badge"></i>&nbsp; Ficha Técnica de la Evidencia Audiovisual</h4>
-    <div style="background:var(--cream);border:1.5px solid var(--border);border-radius:12px;padding:22px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:14px 0">
-      <div>
-        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--navy3);margin-bottom:6px">Tipo de evidencia</div>
-        <div style="font-size:13.5px;font-weight:600;color:var(--navy)">Video expositivo demostrativo</div>
-      </div>
-      <div>
-        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--navy3);margin-bottom:6px">Enlace del video</div>
-        <a href="https://drive.google.com/file/d/1lPRBZsNUzDTMxrY2CzJh-84K1-ZoIkwo/view?usp=sharing" target="_blank" style="font-size:12px;color:var(--navy3);font-family:'JetBrains Mono',monospace;word-break:break-all;text-decoration:none">drive.google.com ↗</a>
-      </div>
-      <div>
-        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--navy3);margin-bottom:6px">Experimento documentado</div>
-        <div style="font-size:13.5px;font-weight:600;color:var(--navy)">Plano inclinado · 1.ª Ley Newton (Inercia)</div>
-      </div>
-      <div>
-        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--navy3);margin-bottom:6px">Aprendiz</div>
-        <div style="font-size:13.5px;font-weight:600;color:var(--navy)">Robinson Esneyder Zapata Anzola</div>
-      </div>
-      <div>
-        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--navy3);margin-bottom:6px">Ficha de formación</div>
-        <div style="font-size:13.5px;font-weight:600;color:var(--navy)">3070115 · ADSO · Abril 2026</div>
-      </div>
-      <div>
-        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--navy3);margin-bottom:6px">Resultado del experimento</div>
-        <div style="font-size:13.5px;font-weight:600;color:var(--navy)">η = 92% · Ep ≈ Ec</div>
-      </div>
-    </div>
-
-    <!-- 5.3 INFORME DE LABORATORIO -->
-    <h3 class="sub" style="margin-top:36px"><i class="fa-solid fa-file-lines" style="color:var(--amber)"></i> 5.3 Informe de Laboratorio</h3>
-    <p class="p">El informe de laboratorio completo corresponde a la evidencia <strong>GA3-220201501-AA3-EV01</strong>. A continuación se presenta el resumen ejecutivo con los principales resultados y hallazgos del experimento realizado.</p>
-
-    <div class="lab-box">
-      <div class="lab-box-head">
-        <div class="lab-ico"><i class="fa-solid fa-microscope"></i></div>
-        <div>
-          <h4>Laboratorio GA3-220201501-AA3-EV01</h4>
-          <small>Conservación de la Energía Mecánica — Plano Inclinado con Esfera · Abril 2026</small>
-        </div>
-      </div>
-      <div class="res-chips">
-        <div class="rc"><div class="rc-l">Pruebas</div><div class="rc-v">3</div><div class="rc-u">×3 repeticiones</div></div>
-        <div class="rc"><div class="rc-l">Eficiencia η</div><div class="rc-v" style="color:var(--green)">92%</div><div class="rc-u">Energía conservada</div></div>
-        <div class="rc"><div class="rc-l">Pérdida</div><div class="rc-v" style="color:var(--red)">8%</div><div class="rc-u">Por fricción</div></div>
-        <div class="rc"><div class="rc-l">Ep máxima</div><div class="rc-v">0.98 J</div><div class="rc-u">Prueba 3</div></div>
-        <div class="rc"><div class="rc-l">Ec máxima</div><div class="rc-v">0.90 J</div><div class="rc-u">Prueba 3</div></div>
-        <div class="rc"><div class="rc-l">Resultado</div><div class="rc-v" style="font-size:15px">Ep≈Ec</div><div class="rc-u">Confirmado ✓</div></div>
-      </div>
-      <div class="tw" style="margin-top:10px">
-        <table>
-          <thead><tr><th>Prueba</th><th>Masa (kg)</th><th>Altura (m)</th><th>Ep (J)</th><th>v real (m/s)</th><th>Ec (J)</th><th>η (%)</th></tr></thead>
-          <tbody>
-            <tr><td><span class="bk bk-b">P1</span></td><td>0.050</td><td>0.20</td><td>0.098</td><td>1.33</td><td>0.090</td><td><span class="bk bk-g">92%</span></td></tr>
-            <tr><td><span class="bk bk-p">P2</span></td><td>0.100</td><td>0.35</td><td>0.343</td><td>2.48</td><td>0.315</td><td><span class="bk bk-g">92%</span></td></tr>
-            <tr><td><span class="bk bk-y">P3</span></td><td>0.200</td><td>0.50</td><td>0.980</td><td>2.98</td><td>0.902</td><td><span class="bk bk-g">92%</span></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="callout green" style="margin-top:14px">
-        <i class="fa-solid fa-check-circle"></i>
-        <div><strong>Conclusión del laboratorio:</strong> El experimento confirmó el principio de conservación de la energía mecánica con eficiencia constante del 92% en los tres escenarios. La pérdida del 8% se atribuye a la fricción entre la esfera y el plano. Estos resultados validan empíricamente la relación Ep inicial ≈ Ec final (Zapata Anzola, 2026).</div>
-      </div>
-    </div>
-
-    <!-- 5.4 REGISTRO FOTOGRÁFICO -->
-    <h3 class="sub" style="margin-top:36px"><i class="fa-solid fa-camera" style="color:var(--amber)"></i> 5.4 Registro Fotográfico del Experimento</h3>
-    <p class="p">A continuación se presenta el registro fotográfico de las etapas del experimento de plano inclinado con esfera, realizado en el domicilio del aprendiz con materiales cotidianos. Las imágenes documentan desde la preparación del montaje hasta la toma de datos y análisis de resultados.</p>
-
-    <div class="photo-grid">
-
-      <!-- FOTO 1: Materiales -->
-      <div class="photo-card">
-        <div class="ph-scene ph1">
-          <span class="ph-num">F-01</span>
-          <span class="ph-step">Preparación</span>
-          <span class="ph-ts">26/03/2026 08:14</span>
-          <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
-            <!-- Mesa de madera -->
-            <rect x="0" y="160" width="320" height="80" fill="#8B6340" rx="0"/>
-            <rect x="0" y="158" width="320" height="6" fill="#a07848"/>
-            <!-- Tabla de madera (plano inclinado) -->
-            <rect x="30" y="110" width="180" height="14" fill="#c8a060" rx="3" transform="rotate(-3,30,110)"/>
-            <!-- Regla -->
-            <rect x="220" y="130" width="80" height="10" fill="#f0d080" rx="2"/>
-            <text x="225" y="138" fill="#888" font-size="6" font-family="monospace">0  5  10 15 20</text>
-            <line x1="228" y1="130" x2="228" y2="140" stroke="#888" stroke-width=".5"/>
-            <line x1="243" y1="130" x2="243" y2="140" stroke="#888" stroke-width=".5"/>
-            <line x1="258" y1="130" x2="258" y2="140" stroke="#888" stroke-width=".5"/>
-            <line x1="273" y1="130" x2="273" y2="140" stroke="#888" stroke-width=".5"/>
-            <line x1="288" y1="130" x2="288" y2="140" stroke="#888" stroke-width=".5"/>
-            <!-- Libros apilados -->
-            <rect x="40" y="128" width="60" height="12" fill="#4a7c9e" rx="2"/>
-            <rect x="38" y="118" width="60" height="12" fill="#e85d04" rx="2"/>
-            <rect x="42" y="108" width="60" height="12" fill="#588157" rx="2"/>
-            <!-- Esfera metálica -->
-            <circle cx="200" cy="150" r="12" fill="url(#sph1)"/>
-            <defs>
-              <radialGradient id="sph1" cx="35%" cy="30%">
-                <stop offset="0%" stop-color="#e8e8e8"/>
-                <stop offset="50%" stop-color="#a0a0a0"/>
-                <stop offset="100%" stop-color="#505050"/>
-              </radialGradient>
-            </defs>
-            <!-- Cronometro (celular) -->
-            <rect x="250" y="148" width="36" height="60" fill="#1a1a2e" rx="4"/>
-            <rect x="253" y="155" width="30" height="40" fill="#0d3b6e" rx="3"/>
-            <text x="258" y="172" fill="#00ff88" font-size="9" font-family="monospace" font-weight="bold">00:00</text>
-            <circle cx="268" cy="196" r="4" fill="#333"/>
-            <!-- Cinta métrica -->
-            <rect x="140" y="152" width="30" height="20" fill="#f0b020" rx="10"/>
-            <circle cx="155" cy="162" r="6" fill="#d09010"/>
-            <!-- Texto etiqueta -->
-            <text x="10" y="230" fill="rgba(0,0,0,0.45)" font-size="10" font-family="sans-serif">Materiales: tabla, esfera, libros, regla, cronómetro</text>
-          </svg>
-        </div>
-        <div class="ph-cap">
-          <strong>Foto 1 — Selección de materiales</strong>
-          <span>Tabla de madera (plano inclinado), esfera metálica de 50 g, libros para elevar el plano, regla, cinta métrica y cronómetro (celular). Todos materiales del hogar.</span>
+          <p style="font-size:.75rem">👆 Toca la imagen para ver los datos de pago completos</p>
+          <p style="margin-top:8px">Una vez pagado, consulta tu número y sube el comprobante.</p>
+          <button class="close-btn" onclick="closeModal()">Cerrar</button>
         </div>
       </div>
 
-      <!-- FOTO 2: Plano inclinado armado -->
-      <div class="photo-card">
-        <div class="ph-scene ph2">
-          <span class="ph-num">F-02</span>
-          <span class="ph-step">Montaje</span>
-          <span class="ph-ts">26/03/2026 08:31</span>
-          <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
-            <!-- Piso / mesa -->
-            <rect x="0" y="180" width="320" height="60" fill="#9a7a50"/>
-            <rect x="0" y="178" width="320" height="4" fill="#b08860"/>
-            <!-- Libros apilados (soporte) -->
-            <rect x="50" y="120" width="70" height="62" fill="#4a7c9e" rx="2"/>
-            <rect x="50" y="120" width="70" height="20" fill="#4a7c9e" rx="2"/>
-            <rect x="52" y="140" width="66" height="20" fill="#e85d04" rx="2"/>
-            <rect x="54" y="158" width="62" height="22" fill="#588157" rx="2"/>
-            <!-- Plano inclinado (tabla) -->
-            <rect x="50" y="108" width="220" height="14" fill="#c8a060" rx="3" transform="rotate(-18, 160, 115)"/>
-            <!-- Sombra del plano -->
-            <ellipse cx="260" cy="183" rx="20" ry="4" fill="rgba(0,0,0,0.2)"/>
-            <!-- Guías laterales -->
-            <rect x="55" y="108" width="210" height="4" fill="#a07840" rx="1" transform="rotate(-18, 160, 110)" opacity="0.6"/>
-            <!-- Nivel de burbuja -->
-            <rect x="90" y="88" width="50" height="14" fill="#e8e0d0" rx="7" transform="rotate(-18, 115, 95)"/>
-            <ellipse cx="115" cy="95" rx="4" ry="4" fill="none" stroke="#888" stroke-width="1" transform="rotate(-18, 115, 95)"/>
-            <circle cx="113" cy="95" r="2.5" fill="#00cc44" transform="rotate(-18, 115, 95)"/>
-            <!-- Esfera arriba del plano -->
-            <circle cx="118" cy="100" r="10" fill="url(#sph2)" transform="rotate(-18, 118, 100)"/>
-            <defs>
-              <radialGradient id="sph2" cx="35%" cy="30%">
-                <stop offset="0%" stop-color="#e8e8e8"/>
-                <stop offset="50%" stop-color="#a0a0a0"/>
-                <stop offset="100%" stop-color="#505050"/>
-              </radialGradient>
-            </defs>
-            <!-- Flecha de movimiento -->
-            <path d="M128,110 L180,150" stroke="#ef4444" stroke-width="2" marker-end="url(#arr)" transform="rotate(-18, 154, 130)"/>
-            <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#ef4444"/></marker></defs>
-            <!-- Etiqueta h -->
-            <line x1="265" y1="128" x2="265" y2="180" stroke="#0066cc" stroke-width="1.5" stroke-dasharray="4,3"/>
-            <text x="270" y="158" fill="#0066cc" font-size="13" font-weight="bold">h</text>
-            <line x1="260" y1="128" x2="270" y2="128" stroke="#0066cc" stroke-width="1.5"/>
-            <line x1="260" y1="180" x2="270" y2="180" stroke="#0066cc" stroke-width="1.5"/>
-          </svg>
-        </div>
-        <div class="ph-cap">
-          <strong>Foto 2 — Plano inclinado ensamblado</strong>
-          <span>Tabla apoyada en libros apilados. Se verificó nivelación lateral con nivel de burbuja (app celular). Guías de madera evitan la desviación de la esfera.</span>
-        </div>
-      </div>
-
-      <!-- FOTO 3: Midiendo altura -->
-      <div class="photo-card">
-        <div class="ph-scene ph3">
-          <span class="ph-num">F-03</span>
-          <span class="ph-step">Medición · P1</span>
-          <span class="ph-ts">26/03/2026 08:47</span>
-          <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
-            <!-- Mesa -->
-            <rect x="0" y="185" width="320" height="55" fill="#9a7a50"/>
-            <rect x="0" y="183" width="320" height="4" fill="#b08860"/>
-            <!-- Plano inclinado -->
-            <rect x="40" y="110" width="220" height="12" fill="#c8a060" rx="2" transform="rotate(-18, 150, 116)"/>
-            <!-- Libros -->
-            <rect x="40" y="128" width="65" height="58" fill="#4a7c9e" rx="2"/>
-            <rect x="43" y="148" width="59" height="20" fill="#e85d04"/>
-            <rect x="46" y="165" width="53" height="20" fill="#588157"/>
-            <!-- Cinta métrica -->
-            <rect x="245" y="100" width="12" height="85" fill="#f0b020" rx="2"/>
-            <line x1="240" y1="102" x2="265" y2="102" stroke="#e8a000" stroke-width="1"/>
-            <text x="246" y="114" fill="#7a5000" font-size="6" font-family="monospace">20</text>
-            <text x="246" y="130" fill="#7a5000" font-size="6" font-family="monospace">15</text>
-            <text x="246" y="148" fill="#7a5000" font-size="6" font-family="monospace">10</text>
-            <text x="246" y="163" fill="#7a5000" font-size="6" font-family="monospace">05</text>
-            <text x="246" y="180" fill="#7a5000" font-size="6" font-family="monospace">00</text>
-            <line x1="240" y1="183" x2="265" y2="183" stroke="#e8a000" stroke-width="1.5"/>
-            <!-- Flecha doble para h -->
-            <line x1="272" y1="108" x2="272" y2="183" stroke="#cc0000" stroke-width="2"/>
-            <polygon points="272,104 268,112 276,112" fill="#cc0000"/>
-            <polygon points="272,187 268,179 276,179" fill="#cc0000"/>
-            <rect x="276" y="133" width="36" height="18" fill="rgba(204,0,0,.85)" rx="4"/>
-            <text x="282" y="145" fill="white" font-size="10" font-weight="bold">0.20m</text>
-            <!-- Mano sosteniendo cinta -->
-            <ellipse cx="252" cy="100" rx="10" ry="8" fill="#f5d5a0"/>
-            <ellipse cx="252" cy="107" rx="8" ry="6" fill="#f5d5a0"/>
-          </svg>
-        </div>
-        <div class="ph-cap">
-          <strong>Foto 3 — Medición de altura (Prueba 1)</strong>
-          <span>Se midió la altura vertical h = 0.20 m del punto de partida de la esfera hasta la base del plano. Masa utilizada: m = 50 g.</span>
-        </div>
-      </div>
-
-      <!-- FOTO 4: Liberación de la esfera -->
-      <div class="photo-card">
-        <div class="ph-scene ph4">
-          <span class="ph-num">F-04</span>
-          <span class="ph-step">Ejecución</span>
-          <span class="ph-ts">26/03/2026 09:02</span>
-          <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
-            <!-- Mesa -->
-            <rect x="0" y="185" width="320" height="55" fill="#9a7a50"/>
-            <rect x="0" y="183" width="320" height="4" fill="#b08860"/>
-            <!-- Plano inclinado completo -->
-            <rect x="30" y="105" width="230" height="13" fill="#c8a060" rx="2" transform="rotate(-18, 145, 111)"/>
-            <!-- Soporte izq -->
-            <rect x="30" y="125" width="65" height="62" fill="#4a7c9e" rx="2"/>
-            <rect x="33" y="145" width="59" height="20" fill="#e85d04"/>
-            <rect x="35" y="163" width="54" height="22" fill="#588157"/>
-            <!-- Esfera en la cima del plano con trazo de movimiento -->
-            <defs>
-              <radialGradient id="sph4" cx="35%" cy="30%">
-                <stop offset="0%" stop-color="#e0e0e0"/>
-                <stop offset="50%" stop-color="#9a9a9a"/>
-                <stop offset="100%" stop-color="#3a3a3a"/>
-              </radialGradient>
-            </defs>
-            <!-- Estela de movimiento -->
-            <ellipse cx="145" cy="140" rx="8" ry="5" fill="rgba(200,160,96,.3)" transform="rotate(-18, 145, 140)"/>
-            <ellipse cx="168" cy="150" rx="6" ry="4" fill="rgba(200,160,96,.25)" transform="rotate(-18, 168, 150)"/>
-            <!-- Esfera en movimiento -->
-            <circle cx="108" cy="118" r="11" fill="url(#sph4)"/>
-            <!-- Flecha dirección -->
-            <path d="M122,126 Q170,148 210,168" stroke="#ef4444" stroke-width="2.5" fill="none" stroke-dasharray="5,3"/>
-            <polygon points="210,168 200,162 205,175" fill="#ef4444"/>
-            <!-- Cronómetro corriendo -->
-            <rect x="230" y="80" width="70" height="50" fill="#1a1a2e" rx="6"/>
-            <rect x="234" y="85" width="62" height="35" fill="#0d3b6e" rx="4"/>
-            <text x="237" y="100" fill="#00ff88" font-size="11" font-family="monospace" font-weight="bold">00:43</text>
-            <text x="245" y="113" fill="#5080b0" font-size="7" font-family="monospace">cronómetro</text>
-            <!-- Mano sosteniendo cronómetro -->
-            <ellipse cx="265" cy="134" rx="12" ry="9" fill="#f5d5a0"/>
-            <!-- Etiqueta v -->
-            <text x="175" y="145" fill="#ef4444" font-size="13" font-weight="bold">v →</text>
-          </svg>
-        </div>
-        <div class="ph-cap">
-          <strong>Foto 4 — Liberación de la esfera (Prueba 1)</strong>
-          <span>La esfera se libera desde reposo (v₀ = 0). El colaborador acciona el cronómetro simultáneamente. Se realizaron 3 repeticiones por prueba tomando el tiempo promedio.</span>
-        </div>
-      </div>
-
-      <!-- FOTO 5: Cambio a Prueba 2 -->
-      <div class="photo-card">
-        <div class="ph-scene ph5">
-          <span class="ph-num">F-05</span>
-          <span class="ph-step">Prueba 2 — 100 g</span>
-          <span class="ph-ts">26/03/2026 09:28</span>
-          <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
-            <!-- Mesa -->
-            <rect x="0" y="185" width="320" height="55" fill="#9a7a50"/>
-            <rect x="0" y="183" width="320" height="4" fill="#b08860"/>
-            <!-- Plano más elevado -->
-            <rect x="25" y="90" width="240" height="13" fill="#c8a060" rx="2" transform="rotate(-22, 145, 97)"/>
-            <!-- Soporte más alto -->
-            <rect x="25" y="107" width="68" height="80" fill="#4a7c9e" rx="2"/>
-            <rect x="28" y="125" width="62" height="22" fill="#e85d04"/>
-            <rect x="30" y="145" width="58" height="22" fill="#588157"/>
-            <rect x="32" y="165" width="54" height="20" fill="#9b5de5"/>
-            <!-- Esfera más grande (100g) -->
-            <defs>
-              <radialGradient id="sph5" cx="30%" cy="25%">
-                <stop offset="0%" stop-color="#d8d8d8"/>
-                <stop offset="50%" stop-color="#888"/>
-                <stop offset="100%" stop-color="#404040"/>
-              </radialGradient>
-            </defs>
-            <circle cx="100" cy="96" r="14" fill="url(#sph5)"/>
-            <!-- Flecha h más grande -->
-            <line x1="268" y1="92" x2="268" y2="183" stroke="#0066cc" stroke-width="2" stroke-dasharray="4,3"/>
-            <polygon points="268,88 264,96 272,96" fill="#0066cc"/>
-            <polygon points="268,187 264,179 272,179" fill="#0066cc"/>
-            <rect x="272" y="127" width="40" height="18" fill="rgba(0,102,204,.85)" rx="4"/>
-            <text x="276" y="139" fill="white" font-size="10" font-weight="bold">0.35m</text>
-            <!-- Balanza digital simulada -->
-            <rect x="190" y="150" width="80" height="45" fill="#e8e0d0" rx="6"/>
-            <rect x="195" y="155" width="70" height="25" fill="#1a1a2e" rx="3"/>
-            <text x="200" y="167" fill="#00ff44" font-size="9" font-family="monospace">100.2 g</text>
-            <text x="205" y="178" fill="#006600" font-size="7" font-family="monospace">TARE:0.0</text>
-            <text x="195" y="192" fill="#7a6a50" font-size="7">Balanza digital</text>
-          </svg>
-        </div>
-        <div class="ph-cap">
-          <strong>Foto 5 — Prueba 2 (m=100 g, h=0.35 m)</strong>
-          <span>Se sustituyó la esfera de 50 g por una de 100 g y se elevó la inclinación hasta h = 0.35 m. La balanza digital confirmó la masa antes de cada ensayo.</span>
-        </div>
-      </div>
-
-      <!-- FOTO 6: Registro de datos -->
-      <div class="photo-card">
-        <div class="ph-scene ph6">
-          <span class="ph-num">F-06</span>
-          <span class="ph-step">Registro de datos</span>
-          <span class="ph-ts">26/03/2026 10:15</span>
-          <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
-            <!-- Mesa -->
-            <rect x="0" y="185" width="320" height="55" fill="#9a7a50"/>
-            <rect x="0" y="183" width="320" height="4" fill="#b08860"/>
-            <!-- Cuaderno / libreta -->
-            <rect x="30" y="60" width="170" height="130" fill="#f5f0e8" rx="4" filter="url(#nbshadow)"/>
-            <defs><filter id="nbshadow"><feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.2"/></filter></defs>
-            <!-- Encuadernado -->
-            <rect x="30" y="60" width="12" height="130" fill="#c8a060" rx="2"/>
-            <circle cx="36" cy="90" r="3" fill="#a07840"/>
-            <circle cx="36" cy="110" r="3" fill="#a07840"/>
-            <circle cx="36" cy="130" r="3" fill="#a07840"/>
-            <circle cx="36" cy="150" r="3" fill="#a07840"/>
-            <circle cx="36" cy="170" r="3" fill="#a07840"/>
-            <!-- Título en cuaderno -->
-            <text x="50" y="80" fill="#1a2535" font-size="8" font-weight="bold" font-family="sans-serif">Experimento — Plano Inclinado</text>
-            <line x1="48" y1="83" x2="192" y2="83" stroke="#ccc" stroke-width=".5"/>
-            <!-- Tabla de datos -->
-            <text x="50" y="96" fill="#333" font-size="7" font-family="monospace">Prueba  m(kg)  h(m)   Ep(J)  t(s)  Ec(J)</text>
-            <line x1="48" y1="99" x2="192" y2="99" stroke="#ddd" stroke-width=".5"/>
-            <text x="50" y="111" fill="#1a5276" font-size="7" font-family="monospace">P1    0.050  0.20  0.098  0.30  0.090</text>
-            <text x="50" y="124" fill="#1a5276" font-size="7" font-family="monospace">P2    0.100  0.35  0.343  0.40  0.315</text>
-            <text x="50" y="137" fill="#1a5276" font-size="7" font-family="monospace">P3    0.200  0.50  0.980  0.48  0.902</text>
-            <line x1="48" y1="140" x2="192" y2="140" stroke="#ddd" stroke-width=".5"/>
-            <text x="50" y="155" fill="#15803d" font-size="8" font-weight="bold">η = 92% ✓  ΔE = 8% (fricción)</text>
-            <text x="50" y="170" fill="#555" font-size="7" font-family="monospace">Ep ≈ Ec  (confirmado en 3 pruebas)</text>
-            <!-- Lápiz -->
-            <rect x="195" y="140" width="8" height="55" fill="#f0d060" rx="1" transform="rotate(-15, 199, 167)"/>
-            <polygon points="199,192 195,205 203,205" fill="#f5d5a0" transform="rotate(-15, 199, 197)"/>
-            <rect x="195" y="137" width="8" height="5" fill="#e85d04" transform="rotate(-15, 199, 140)"/>
-            <!-- Celular al lado -->
-            <rect x="215" y="155" width="50" height="80" fill="#1a1a2e" rx="6"/>
-            <rect x="218" y="163" width="44" height="55" fill="#0d3b6e" rx="4"/>
-            <text x="221" y="178" fill="#00ff88" font-size="10" font-family="monospace" font-weight="bold">00:48</text>
-            <text x="223" y="192" fill="#5080b0" font-size="6" font-family="monospace">t promedio</text>
-            <text x="224" y="204" fill="#5080b0" font-size="6" font-family="monospace">3 repeats</text>
-            <circle cx="240" cy="225" r="6" fill="#333"/>
-          </svg>
-        </div>
-        <div class="ph-cap">
-          <strong>Foto 6 — Registro y análisis de datos</strong>
-          <span>Se anotaron todos los datos en la libreta de laboratorio. Se calcularon Ep, Ec y la eficiencia η = 92%. El cronómetro registró el promedio de las 3 repeticiones.</span>
-        </div>
-      </div>
-
-    </div><!-- /photo-grid -->
-
-    <div class="callout purple">
-      <i class="fa-solid fa-camera"></i>
-      <div><strong>Nota sobre el registro fotográfico:</strong> Las ilustraciones anteriores representan fielmente las etapas del experimento realizado por el aprendiz Robinson Esneyder Zapata Anzola en su domicilio durante abril de 2026. El registro visual original también se puede observar en el video expositivo publicado en YouTube (ver sección 5.2). Todos los datos consignados en las fotografías corresponden a los valores reales obtenidos durante el experimento (Zapata Anzola, 2026).</div>
-    </div>
-
-    <!-- 5.5 INFOGRAFÍA -->
-    <h3 class="sub" style="margin-top:36px"><i class="fa-solid fa-chart-simple" style="color:var(--amber)"></i> 5.5 Infografía — "La Ciencia de las Cosas"</h3>
-    <p class="p">La siguiente infografía sintetiza el contenido del componente formativo <em>"La ciencia de las cosas"</em>, integrando los conceptos de física, sus leyes fundamentales, los tipos de energía, las transformaciones energéticas y sus aplicaciones en el contexto productivo y social colombiano.</p>
-
-    <div class="infog">
-      <div class="infog-title">🔬 La Ciencia de las Cosas</div>
-      <div class="infog-sub">Componente formativo · SENA · GA3-220201501 · Ficha 3070115</div>
-
-      <div class="infog-sec-title">¿Qué estudia la física?</div>
-      <div class="infog-grid">
-        <div class="ig-block">
-          <span class="ig-ico">⚛️</span>
-          <div class="ig-title">Definición</div>
-          <div class="ig-body">Ciencia que estudia la materia, la energía y sus interacciones, usando el método científico para describir y predecir fenómenos naturales.</div>
-        </div>
-        <div class="ig-block">
-          <span class="ig-ico">🔬</span>
-          <div class="ig-title">Método Científico</div>
-          <div class="ig-body">
-            <ul>
-              <li>Observación del fenómeno</li>
-              <li>Planteamiento de hipótesis</li>
-              <li>Diseño experimental</li>
-              <li>Análisis de resultados</li>
-              <li>Conclusión y divulgación</li>
-            </ul>
-          </div>
-        </div>
-        <div class="ig-block">
-          <span class="ig-ico">⚡</span>
-          <div class="ig-title">Tipos de Energía</div>
-          <div class="ig-body">
-            <ul>
-              <li>Cinética: Ec = ½mv²</li>
-              <li>Potencial: Ep = mgh</li>
-              <li>Térmica: Q = mcΔT</li>
-              <li>Solar, Eólica, Nuclear</li>
-              <li>Eléctrica: E = VIt</li>
-            </ul>
-          </div>
-        </div>
-        <div class="ig-block">
-          <span class="ig-ico">🔄</span>
-          <div class="ig-title">Transformación</div>
-          <div class="ig-body">La energía no se crea ni destruye, solo se transforma. Toda conversión energética implica alguna pérdida por fricción o calor residual.</div>
-        </div>
-      </div>
-
-      <div class="infog-sec-title">Leyes Fundamentales</div>
-      <div class="infog-formulas">
-        <div class="if-chip"><span class="if-f">ΣF = 0</span><span class="if-n">1.ª Ley Newton — Inercia</span></div>
-        <div class="if-chip"><span class="if-f">F = m·a</span><span class="if-n">2.ª Ley Newton — Dinámica</span></div>
-        <div class="if-chip"><span class="if-f">F₁₂ = −F₂₁</span><span class="if-n">3.ª Ley Newton — Acción/Reacción</span></div>
-        <div class="if-chip"><span class="if-f">ΔU = Q−W</span><span class="if-n">1.er Principio Termodinámico</span></div>
-        <div class="if-chip"><span class="if-f">ΔS ≥ 0</span><span class="if-n">2.do Principio — Entropía</span></div>
-        <div class="if-chip"><span class="if-f">E = mc²</span><span class="if-n">Einstein — Masa-Energía</span></div>
-      </div>
-
-      <div class="infog-sec-title">Aplicaciones al Contexto Productivo y Social</div>
-      <div class="infog-grid">
-        <div class="ig-block">
-          <span class="ig-ico">💧</span>
-          <div class="ig-title">Energía Hidroeléctrica</div>
-          <div class="ig-body">Ep del agua → Ec → Eléctrica. Principio de conservación a escala industrial. Colombia: hidroeléctricas proveen ~70% de la energía eléctrica.</div>
-        </div>
-        <div class="ig-block">
-          <span class="ig-ico">🚗</span>
-          <div class="ig-title">Vehículos Eléctricos</div>
-          <div class="ig-body">Frenado regenerativo: Ec → Eléctrica almacenada en batería. Ahorro energético y reducción de emisiones CO₂ en el transporte.</div>
-        </div>
-        <div class="ig-block">
-          <span class="ig-ico">🖥️</span>
-          <div class="ig-title">Centros de Datos TI</div>
-          <div class="ig-body">E eléctrica → calor disipado. La física térmica determina la eficiencia de servidores. El 40% del costo operativo de un datacenter es energético.</div>
-        </div>
-        <div class="ig-block">
-          <span class="ig-ico">☀️</span>
-          <div class="ig-title">Energías Renovables</div>
-          <div class="ig-body">Solar → Eléctrica (paneles FV). Eólica → Eléctrica (aerogeneradores). Ley 1715/2014 regula su integración en Colombia.</div>
-        </div>
-      </div>
-
-      <div class="infog-exp">
-        <div class="infog-exp-title">Experimento desarrollado · Plano Inclinado con Esfera · SENA Ficha 3070115</div>
-        <div class="infog-exp-stats">
-          <div><span class="ies-v">92%</span><span class="ies-l">Eficiencia energética</span></div>
-          <div><span class="ies-v">3</span><span class="ies-l">Pruebas × 3 repeticiones</span></div>
-          <div><span class="ies-v">Ep≈Ec</span><span class="ies-l">Principio confirmado</span></div>
-          <div><span class="ies-v">8%</span><span class="ies-l">Pérdida por fricción</span></div>
-        </div>
-      </div>
-      <div class="infog-footer">Robinson Esneyder Zapata Anzola · Ficha 3070115 · SENA · Abril 2026 · Normas APA 7.ª edición</div>
-    </div>
-
-  </div><!-- /sec-body -->
-</div><!-- /sec-wrap desarrollo -->
-<div class="divider"></div>
-
-<!-- ══════════════════════════════════════
-     6. CONCLUSIONES
-══════════════════════════════════════ -->
-<div class="sec-wrap">
-  <div class="sec-head">
-    <div class="sec-ico"><i class="fa-solid fa-check-double"></i></div>
-    <div class="sec-head-txt">
-      <div class="sec-label">Sección 6</div>
-      <h2>Conclusiones</h2>
-      <p>Reflexiones finales sobre el proceso y los aprendizajes adquiridos</p>
-    </div>
-  </div>
-  <div class="sec-body">
-    <ul class="concl-list">
-      <li>
-        <div class="cl-n">1</div>
-        <div class="cl-txt">La elaboración de esta bitácora permitió verificar que el <strong>principio de conservación de la energía mecánica</strong> es válido en condiciones reales de laboratorio, con una eficiencia del 92% y una pérdida del 8% atribuida a la fricción. Este resultado confirma lo planteado por Serway y Jewett (2019) y constituye evidencia directa del método científico aplicado en contextos cotidianos.</div>
-      </li>
-      <li>
-        <div class="cl-n">2</div>
-        <div class="cl-txt">La construcción de una <strong>definición personal de la física</strong> evidenció la evolución conceptual del aprendiz: de una visión abstracta de fórmulas hacia la comprensión de la física como lenguaje universal que describe y permite intervenir la realidad, incluyendo los sistemas tecnológicos propios del desarrollo de software.</div>
-      </li>
-      <li>
-        <div class="cl-n">3</div>
-        <div class="cl-txt">La estrategia de <strong>aprendizaje experiencial</strong> (Kolb, 1984) demostró ser altamente efectiva. La manipulación de materiales cotidianos, la toma de mediciones reales y el análisis cuantitativo de los resultados generaron un aprendizaje significativo y duradero, coherente con el modelo pedagógico del SENA (2013).</div>
-      </li>
-      <li>
-        <div class="cl-n">4</div>
-        <div class="cl-txt">Los principios físicos estudiados tienen <strong>aplicación directa en el sector TI</strong>: la gestión térmica de servidores, el consumo energético de centros de datos, el diseño de hardware eficiente y la modelación computacional de fenómenos físicos dependen del dominio de conceptos como calor, trabajo, energía cinética y termodinámica. Esto enriquece el perfil profesional del tecnólogo ADSO.</div>
-      </li>
-      <li>
-        <div class="cl-n">5</div>
-        <div class="cl-txt">La <strong>infografía</strong> elaborada sobre "La ciencia de las cosas" evidenció la capacidad del aprendiz para sintetizar, organizar y comunicar visualmente el conocimiento adquirido, competencia transversal relevante para un desarrollador de software que debe comunicar soluciones técnicas a distintas audiencias.</div>
-      </li>
-      <li>
-        <div class="cl-n">6</div>
-        <div class="cl-txt">Esta bitácora, junto con el informe de laboratorio (GA3-AA3-EV01) y el video expositivo, constituyen un <strong>portafolio de evidencias completo</strong> que demuestra el logro de los resultados de aprendizaje propuestos en la guía GA3: identificar, analizar y aplicar principios físicos en contextos productivos y sociales reales.</div>
-      </li>
-    </ul>
-    <div class="callout green" style="margin-top:8px">
-      <i class="fa-solid fa-graduation-cap"></i>
-      <div><strong>Reflexión final del aprendiz:</strong> "Este proceso me demostró que la física no es solo una materia: es una forma de ver el mundo. Ahora entiendo que detrás de cada CPU, cada servidor y cada dispositivo hay leyes físicas que determinan su comportamiento y eficiencia. Esa comprensión me hace mejor tecnólogo." — Robinson Esneyder Zapata Anzola, abril de 2026.</div>
     </div>
   </div>
 </div>
-<div class="divider"></div>
 
-<!-- ══════════════════════════════════════
-     7. BIBLIOGRAFÍA APA 7
-══════════════════════════════════════ -->
-<div class="sec-wrap">
-  <div class="sec-head">
-    <div class="sec-ico"><i class="fa-solid fa-book"></i></div>
-    <div class="sec-head-txt">
-      <div class="sec-label">Sección 7</div>
-      <h2>Bibliografía</h2>
-      <p>Referencias en norma APA 7.ª edición — orden alfabético con sangría francesa</p>
-    </div>
-  </div>
-  <div class="sec-body">
-    <div class="callout blue" style="margin-bottom:20px">
-      <i class="fa-solid fa-circle-info"></i>
-      <div>Todas las referencias siguen el formato APA 7.ª edición (American Psychological Association, 2020). Ordenadas alfabéticamente por apellido del primer autor, con sangría francesa (<em>hanging indent</em>) conforme a los lineamientos del manual.</div>
-    </div>
-    <ol class="apa-list">
-      <li class="apa-item"><span class="apa-n">[1]</span>American Psychological Association. (2020). <em>Publication manual of the American Psychological Association</em> (7.ª ed.). https://doi.org/10.1037/0000165-000</li>
-      <li class="apa-item"><span class="apa-n">[2]</span>Congreso de Colombia. (2014, 13 de mayo). <em>Ley 1715 de 2014: Por medio de la cual se regula la integración de las energías renovables no convencionales al sistema energético nacional</em>. Diario Oficial n.° 49.150. https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=57365</li>
-      <li class="apa-item"><span class="apa-n">[3]</span>Dewey, J. (1916). <em>Democracy and education: An introduction to the philosophy of education</em>. Macmillan. (Obra citada en Ministerio de Educación Nacional, 2006)</li>
-      <li class="apa-item"><span class="apa-n">[4]</span>Drake, S. (1978). <em>Galileo at work: His scientific biography</em>. University of Chicago Press.</li>
-      <li class="apa-item"><span class="apa-n">[5]</span>Einstein, A. (1905). Zur elektrodynamik bewegter körper [Sobre la electrodinámica de cuerpos en movimiento]. <em>Annalen der Physik, 17</em>(10), 891–921. https://doi.org/10.1002/andp.19053221004 (Obra citada en Tipler y Llewellyn, 2012)</li>
-      <li class="apa-item"><span class="apa-n">[6]</span>Foro Económico Mundial. (2023). <em>The global competitiveness report 2023</em>. World Economic Forum. https://www.weforum.org/reports/global-competitiveness-report-2023</li>
-      <li class="apa-item"><span class="apa-n">[7]</span>Kolb, D. A. (1984). <em>Experiential learning: Experience as the source of learning and development</em>. Prentice Hall.</li>
-      <li class="apa-item"><span class="apa-n">[8]</span>Ministerio de Educación Nacional. (2006). <em>Estándares básicos de competencias en ciencias naturales y ciencias sociales</em>. MEN. https://www.mineducacion.gov.co/1621/articles-116042_archivo_pdf3.pdf</li>
-      <li class="apa-item"><span class="apa-n">[9]</span>Newton, I. (1999). <em>The principia: Mathematical principles of natural philosophy</em> (I. B. Cohen y A. Whitman, Trads.). University of California Press. (Trabajo original publicado en 1687)</li>
-      <li class="apa-item"><span class="apa-n">[10]</span>Schön, D. A. (1983). <em>The reflective practitioner: How professionals think in action</em>. Basic Books.</li>
-      <li class="apa-item"><span class="apa-n">[11]</span>Servicio Nacional de Aprendizaje. (2013). <em>Modelo pedagógico de la formación profesional integral</em>. SENA. https://www.sena.edu.co</li>
-      <li class="apa-item"><span class="apa-n">[12]</span>Serway, R. A., y Jewett, J. W. (2019). <em>Física para ciencias e ingeniería</em> (10.ª ed., Vol. 1). Cengage Learning.</li>
-      <li class="apa-item"><span class="apa-n">[13]</span>Tipler, P. A., y Llewellyn, R. A. (2012). <em>Modern physics</em> (6.ª ed.). W. H. Freeman and Company.</li>
-      <li class="apa-item"><span class="apa-n">[14]</span>Young, H. D., y Freedman, R. A. (2018). <em>University physics with modern physics</em> (15.ª ed.). Pearson Education.</li>
-      <li class="apa-item"><span class="apa-n">[15]</span>Zapata Anzola, R. E. (2026, abril). <em>Informe de laboratorio GA3-220201501-AA3-EV01: Conservación de la energía mecánica — plano inclinado con esfera</em> [Evidencia de producto]. SENA – Ficha 3070115.</li>
-      <li class="apa-item"><span class="apa-n">[16]</span>Zapata Anzola, R. E. (2026, abril). <em>Física aplicada: Conservación de la energía mecánica — experimento de plano inclinado</em> [Video]. YouTube. https://www.youtube.com/watch?v=TWUZFl28QJI</li>
-    </ol>
-  </div>
-</div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
-<div class="ftr">
-  <strong>SENA – Servicio Nacional de Aprendizaje</strong><br>
-  GA3-220201501-AA4-EV01 · Bitácora de Procesos · Tecnología en Análisis y Desarrollo de Software<br>
-  <span style="opacity:.55">Robinson Esneyder Zapata Anzola · Ficha 3070115 · abril 2026 · Normas APA 7.ª edición</span>
-</div>
+<script>
+// ── URL del Web App deployado en Google Apps Script ──────────
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbw1JksjniNd1m7W2FdfTeM2TODa-3L-XS8dgR3D9Z4T2gwHLrzyAdL7eDjiTtppSEDO/exec';
+// ─────────────────────────────────────────────────────────────
 
-</div><!-- /doc -->
+var allTickets = [];
+var currentNum = null;
+
+/* TABS */
+function switchTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* TOAST */
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + (type||'success') + ' show';
+  setTimeout(function(){t.classList.remove('show');}, 3000);
+}
+
+/* SHOW/HIDE helpers */
+function show(id){document.getElementById(id).style.display='';}
+function hide(id){document.getElementById(id).style.display='none';}
+
+/* LOAD */
+async function loadTickets() {
+  try {
+    var res  = await fetch(GAS_URL + '?action=getTickets');
+    var data = await res.json();
+    allTickets = data.tickets || [];
+    renderGrid(allTickets);
+    renderStats(allTickets);
+  } catch(e) {
+    document.getElementById('grid').innerHTML =
+      '<div class="loader" style="color:#e74c3c">⚠️ No se pudo conectar. Verifica la URL del script.</div>';
+  }
+}
+
+/* STATS */
+function renderStats(tickets) {
+  var cnt={DISPONIBLE:0,OCUPADO:0,PAGADO:0,CANCELADO:0};
+  tickets.forEach(function(t){cnt[t.estado]=(cnt[t.estado]||0)+1;});
+  document.getElementById('stats').innerHTML =
+    '<div class="stat"><div class="stat-n gold">'+tickets.length+'</div><div class="stat-l">Total</div></div>'+
+    '<div class="stat"><div class="stat-n green">'+(cnt.DISPONIBLE||0)+'</div><div class="stat-l">Disponibles</div></div>'+
+    '<div class="stat"><div class="stat-n red">'+(cnt.OCUPADO||0)+'</div><div class="stat-l">Ocupados</div></div>'+
+    '<div class="stat"><div class="stat-n blue">'+(cnt.PAGADO||0)+'</div><div class="stat-l">Pagados</div></div>'+
+    '<div class="stat"><div class="stat-n grey">'+(cnt.CANCELADO||0)+'</div><div class="stat-l">Cancelados</div></div>';
+}
+
+/* GRID */
+function badgeLabel(e){return{DISPONIBLE:'libre',OCUPADO:'ocupado',PAGADO:'pagado',CANCELADO:'cancelado'}[e]||e;}
+function renderGrid(tickets) {
+  var grid = document.getElementById('grid');
+  if (!tickets.length){grid.innerHTML='<div class="loader">Sin tickets</div>';return;}
+  grid.innerHTML='';
+  tickets.forEach(function(t){
+    var el=document.createElement('div');
+    el.className='ticket '+t.estado;
+    el.id='t-'+t.numero;
+    el.innerHTML=t.numero+'<span class="ticket-badge">'+badgeLabel(t.estado)+'</span>';
+    if(t.estado==='DISPONIBLE') el.onclick=function(){openModal(t.numero);};
+    grid.appendChild(el);
+  });
+}
+
+/* SEARCH HIGHLIGHT */
+function highlightTicket(){
+  var num=document.getElementById('searchNum').value.trim();
+  if(!num)return;
+  document.querySelectorAll('.ticket').forEach(function(el){el.style.outline='';el.style.outlineOffset='';});
+  var el=document.getElementById('t-'+num);
+  if(el){
+    el.scrollIntoView({behavior:'smooth',block:'center'});
+    el.style.outline='3px solid var(--gold)';
+    el.style.outlineOffset='3px';
+    setTimeout(function(){el.style.outline='';},2400);
+  } else showToast('Número no encontrado','error');
+}
+
+/* MODAL */
+function openModal(numero){
+  currentNum=numero;
+  show('view-confirm');hide('view-form');hide('view-success');hide('view-reg-success');
+  document.getElementById('mTitle').textContent='Ticket #'+numero;
+  document.getElementById('mNum').textContent='#'+numero;
+  document.getElementById('f-nombre').value='';
+  document.getElementById('f-cedula').value='';
+  document.getElementById('f-doc').value='';
+  document.getElementById('overlay').classList.add('open');
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('open');
+  currentNum=null;
+  loadTickets(); // refresca grid al cerrar
+}
+function overlayClick(e){if(e.target===document.getElementById('overlay'))closeModal();}
+
+async function onYes(){
+  if(!currentNum)return;
+  var data=await postGAS({action:'cancelTicket',numero:currentNum});
+  if(data.error){showToast(data.error,'error');return;}
+  hide('view-confirm');show('view-success');
+}
+
+function onNo(){hide('view-confirm');show('view-form');}
+
+async function submitForm(){
+  var nombre=document.getElementById('f-nombre').value.trim();
+  var cedula=document.getElementById('f-cedula').value.trim();
+  var doc=document.getElementById('f-doc').value.trim();
+  if(!nombre||!cedula||!doc){showToast('Completa todos los campos','error');return;}
+  var btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.textContent='Registrando…';
+  var data=await postGAS({action:'registerTicket',numero:currentNum,nombre:nombre,cedula:cedula,documento:doc});
+  btn.disabled=false;btn.textContent='✅ Confirmar Registro';
+  if(data.error){showToast(data.error,'error');return;}
+  hide('view-form');show('view-reg-success');
+}
+
+/* QUERY */
+async function queryTicket(){
+  var num=document.getElementById('queryNum').value.trim();
+  if(!num){showToast('Ingresa un número','error');return;}
+  var rc=document.getElementById('resultCard');
+  rc.classList.remove('show');
+  try{
+    var res=await fetch(GAS_URL+'?action=queryTicket&numero='+encodeURIComponent(num));
+    var data=await res.json();
+    if(data.error){showToast(data.error,'error');return;}
+    var t=data.ticket;
+    document.getElementById('r-numero').textContent=t.numero;
+    document.getElementById('r-estado').innerHTML='<span class="badge '+t.estado+'">'+t.estado+'</span>';
+    document.getElementById('r-nombre').textContent=t.nombre||'—';
+    document.getElementById('r-cedula').textContent=t.cedula||'—';
+    document.getElementById('r-doc').textContent=t.documento||'—';
+    document.getElementById('r-fecha').textContent=t.fecha||'—';
+
+    var up=document.getElementById('uploadSection');
+    var cl=document.getElementById('compLink');
+    up.dataset.numero=t.numero;
+
+    if(t.estado==='OCUPADO'){
+      up.style.display='';cl.style.display='none';
+    } else if(t.comprobante){
+      up.style.display='none';
+      document.getElementById('comprobLink').href=t.comprobante;
+      cl.style.display='';
+    } else {
+      up.style.display='none';cl.style.display='none';
+    }
+    rc.classList.add('show');
+  } catch(e){showToast('Error de conexión','error');}
+}
+
+/* UPLOAD RECEIPT */
+async function uploadReceipt(){
+  var file=document.getElementById('receiptFile').files[0];
+  var numero=document.getElementById('uploadSection').dataset.numero;
+  if(!file){showToast('Selecciona un archivo','error');return;}
+  if(!numero){showToast('Número no identificado','error');return;}
+  if(file.size>5*1024*1024){showToast('Archivo mayor a 5 MB','error');return;}
+  var btn=document.getElementById('uploadBtn');
+  btn.disabled=true;btn.textContent='Subiendo…';
+  var reader=new FileReader();
+  reader.onload=async function(ev){
+    var base64=ev.target.result.split(',')[1];
+    var data=await postGAS({action:'uploadReceipt',numero:numero,base64:base64,mimeType:file.type,fileName:file.name});
+    btn.disabled=false;btn.textContent='📤 Cargar Comprobante';
+    if(data.error){showToast(data.error,'error');return;}
+    showToast('¡Comprobante cargado!');
+    document.getElementById('comprobLink').href=data.url;
+    document.getElementById('compLink').style.display='';
+    document.getElementById('uploadSection').style.display='none';
+    document.getElementById('r-estado').innerHTML='<span class="badge PAGADO">PAGADO</span>';
+  };
+  reader.readAsDataURL(file);
+}
+
+/* API POST */
+async function postGAS(payload){
+  try{
+    var res=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    return await res.json();
+  } catch(e){return {error:'Error de conexión con el servidor'};}
+}
+
+/* INIT */
+loadTickets();
+setInterval(loadTickets,60000);
+</script>
 </body>
 </html>
