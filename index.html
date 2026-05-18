@@ -28,12 +28,10 @@
   --sh2:0 6px 30px rgba(0,0,0,.13);
 }
 
-/* ── RESET ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
 body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overscroll-behavior:none}
 
-/* ── HEADER ── */
 header{
   background:#fff;border-bottom:2px solid var(--border);
   padding:20px 16px 16px;text-align:center;
@@ -47,11 +45,26 @@ header h1{
 }
 header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em;}
 
-/* ── TABS ── */
+/* indicador en vivo */
+.live{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:6px;font-size:.65rem;color:var(--muted);
+  letter-spacing:.05em;text-transform:uppercase;
+}
+.live-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--g-br);
+  animation:pulse 1.6s infinite ease-in-out;
+}
+.live.off .live-dot{background:var(--c-br);animation:none;}
+@keyframes pulse{
+  0%,100%{opacity:1;transform:scale(1);}
+  50%{opacity:.45;transform:scale(.78);}
+}
+
 .tabs{
   display:flex;gap:0;background:#fff;
   border-bottom:2px solid var(--border);
-  position:sticky;top:70px;z-index:49;
+  position:sticky;top:90px;z-index:49;
 }
 .tab{
   flex:1;padding:13px 8px;border:none;background:transparent;
@@ -64,11 +77,9 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
 .tab.active{color:var(--gold);border-bottom-color:var(--gold);}
 .tab:hover:not(.active){color:var(--txt);}
 
-/* ── PANELS ── */
 .panel{display:none;padding:16px;max-width:700px;margin:0 auto;padding-bottom:80px;}
 .panel.active{display:block;}
 
-/* ── STATS ── */
 .stats{
   display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
   margin-bottom:16px;
@@ -83,7 +94,6 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
 .stat-n.g{color:var(--g-tx)}.stat-n.a{color:var(--a-tx)}.stat-n.p{color:var(--p-tx)}
 .stat-n.c{color:var(--c-tx)}.stat-n.gold{color:var(--gold)}
 
-/* ── LEGEND ── */
 .legend{
   display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
   margin-bottom:14px;
@@ -91,7 +101,6 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
 .leg{display:flex;align-items:center;gap:5px;font-size:.72rem;color:var(--muted);}
 .leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
 
-/* ── SEARCH ── */
 .search-row{display:flex;gap:8px;margin-bottom:16px;}
 .search-row input{
   flex:1;background:var(--card);border:1.5px solid var(--border);
@@ -104,8 +113,14 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
   font-family:'Sora',sans-serif;font-weight:600;font-size:.82rem;
   padding:11px 16px;cursor:pointer;white-space:nowrap;
 }
+.search-row .refresh{
+  background:transparent;border:1.5px solid var(--border2);color:var(--muted);
+  padding:11px 12px;display:flex;align-items:center;justify-content:center;
+}
+.search-row .refresh svg{width:16px;height:16px;}
+.search-row .refresh.spin svg{animation:rot .6s linear infinite;}
+@keyframes rot{to{transform:rotate(360deg);}}
 
-/* ── GRID ── */
 #grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(64px,1fr));
@@ -128,11 +143,13 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
 
 .ticket.DISPONIBLE{background:var(--g-bg);border-color:var(--g-br);color:var(--g-tx);}
 .ticket.DISPONIBLE:hover{box-shadow:0 0 0 3px rgba(39,174,96,.25);}
-.ticket.APARTADO{background:var(--a-bg);border-color:var(--a-br);color:var(--a-tx);cursor:default;}
-.ticket.PAGADO{background:var(--p-bg);border-color:var(--p-br);color:var(--p-tx);cursor:default;}
-.ticket.CANCELADO{background:var(--c-bg);border-color:var(--c-br);color:var(--c-tx);cursor:default;opacity:.55;}
+.ticket.APARTADO{background:var(--a-bg);border-color:var(--a-br);color:var(--a-tx);}
+.ticket.APARTADO:hover{box-shadow:0 0 0 3px rgba(224,165,0,.25);}
+.ticket.PAGADO{background:var(--p-bg);border-color:var(--p-br);color:var(--p-tx);}
+.ticket.PAGADO:hover{box-shadow:0 0 0 3px rgba(36,113,200,.25);}
+.ticket.CANCELADO{background:var(--c-bg);border-color:var(--c-br);color:var(--c-tx);opacity:.55;}
+.ticket.CANCELADO:hover{opacity:.8;}
 
-/* ── OVERLAY ── */
 .overlay{
   position:fixed;inset:0;background:rgba(20,16,8,.55);
   backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
@@ -143,7 +160,6 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
 @media(min-width:480px){.overlay{align-items:center;}}
 .overlay.open{opacity:1;pointer-events:all;}
 
-/* ── MODAL ── */
 .modal{
   background:var(--card);width:100%;max-width:440px;
   border-radius:20px 20px 0 0;
@@ -177,7 +193,6 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
 
 .modal-body{padding:20px;}
 
-/* confirm */
 .confirm-q{
   font-size:.9rem;text-align:center;line-height:1.6;
   margin-bottom:20px;color:var(--txt);
@@ -185,7 +200,6 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
 .confirm-q strong{color:var(--gold);font-size:1.05rem;}
 .two-btn{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0;}
 
-/* form */
 .field{margin-bottom:13px;}
 .field label{
   display:block;font-size:.7rem;font-weight:700;
@@ -200,7 +214,6 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
 .field input[type=file]{padding:8px 12px;cursor:pointer;font-size:.82rem;}
 .file-note{font-size:.67rem;color:var(--muted);margin-top:4px;}
 
-/* generic buttons */
 .btn{
   width:100%;padding:13px;border-radius:9px;border:none;
   font-family:'Sora',sans-serif;font-size:.88rem;font-weight:700;
@@ -216,7 +229,6 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
 .btn-green{background:#27ae60;color:#fff;}
 .btn-red{background:var(--r-bg);border:1.5px solid var(--r-br);color:var(--r-tx);}
 
-/* action buttons in confirm */
 .action-btn{
   padding:13px 6px;border-radius:9px;border:none;
   font-family:'Sora',sans-serif;font-size:.82rem;font-weight:700;
@@ -229,14 +241,12 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
 .action-btn.pagar{background:var(--p-bg);border:1.5px solid var(--p-br);color:var(--p-tx);}
 .action-btn.cancelar{background:var(--r-bg);border:1.5px solid var(--r-br);color:var(--r-tx);}
 
-/* divider */
 .divider{
   display:flex;align-items:center;gap:10px;margin:14px 0;
   font-size:.7rem;color:var(--muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;
 }
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
 
-/* success */
 .success-wrap{text-align:center;padding:8px 0;}
 .success-icon{
   width:72px;height:72px;border-radius:50%;margin:0 auto 14px;
@@ -256,7 +266,20 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
 }
 .pay-img img{width:100%;height:100%;object-fit:cover;display:block;}
 
-/* ── QUERY PANEL ── */
+/* info card en modal de ticket ocupado */
+.info-card{
+  background:var(--card2);border:1.5px solid var(--border);
+  border-radius:10px;padding:14px;margin-bottom:14px;
+}
+.info-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:6px 0;border-bottom:1px solid var(--border);font-size:.82rem;
+}
+.info-row:last-child{border-bottom:none;}
+.info-row .k{font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+.info-row .v{font-weight:700;color:var(--txt);text-align:right;}
+
+/* QUERY PANEL */
 .q-card{
   background:var(--card);border:1.5px solid var(--border);
   border-radius:14px;padding:20px;box-shadow:var(--sh);
@@ -289,7 +312,6 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
 }
 .upload-box p{font-size:.78rem;color:var(--muted);margin-bottom:10px;}
 
-/* ── TOAST ── */
 #toast{
   position:fixed;bottom:20px;left:50%;
   transform:translateX(-50%) translateY(90px);
@@ -298,13 +320,12 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
   font-size:.83rem;font-weight:600;color:var(--txt);
   box-shadow:var(--sh2);z-index:999;
   transition:transform .26s cubic-bezier(.34,1.56,.64,1);
-  white-space:nowrap;max-width:90vw;text-align:center;
+  max-width:90vw;text-align:center;
 }
 #toast.show{transform:translateX(-50%) translateY(0);}
 #toast.ok{border-color:var(--g-br);color:var(--g-tx);}
 #toast.err{border-color:var(--r-br);color:var(--r-tx);}
 
-/* ── LOADER ── */
 .loader{text-align:center;padding:48px 16px;color:var(--muted);}
 .spin{
   width:32px;height:32px;margin:0 auto 12px;
@@ -319,6 +340,7 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
 <header>
   <h1>El Gran Sorteo</h1>
   <p>Sistema oficial de gestión de rifas</p>
+  <div class="live" id="live"><span class="live-dot"></span><span id="liveTxt">Conectado · actualiza solo</span></div>
 </header>
 
 <div class="tabs">
@@ -346,6 +368,9 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
   <div class="search-row">
     <input type="number" id="sNum" placeholder="Buscar número…" inputmode="numeric"/>
     <button onclick="highlight()">Buscar</button>
+    <button class="refresh" id="refreshBtn" onclick="manualRefresh()" title="Actualizar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+    </button>
   </div>
 
   <div id="grid">
@@ -408,7 +433,7 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
     </div>
     <div class="modal-body">
 
-      <!-- VISTA: opciones iniciales -->
+      <!-- VISTA: opciones iniciales (DISPONIBLE) -->
       <div id="v-opciones">
         <p class="confirm-q">Numero <strong id="mNum">—</strong><br/>Que deseas hacer con este numero?</p>
         <div class="two-btn">
@@ -421,11 +446,16 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
             Comprar y Pagar
           </button>
         </div>
-        <div class="divider">o</div>
-        <button class="action-btn cancelar" onclick="showConfirmCancel()" style="width:100%;flex-direction:row;gap:10px;">
+      </div>
+
+      <!-- VISTA: info de ticket ocupado (APARTADO/PAGADO/CANCELADO) -->
+      <div id="v-info" style="display:none;">
+        <div class="info-card" id="infoCard"></div>
+        <button class="action-btn cancelar" onclick="showConfirmCancel()" id="btnCancelarInfo" style="width:100%;flex-direction:row;gap:10px;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
           Cancelar Boleta
         </button>
+        <button class="btn btn-outline" onclick="closeModal()" style="margin-top:10px;">Cerrar</button>
       </div>
 
       <!-- VISTA: formulario apartar / pagar -->
@@ -434,13 +464,6 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
         <div class="field"><label>Nombre Completo</label><input type="text" id="f-nombre" placeholder="Nombre"/></div>
         <div class="field"><label>Numero de Telefono</label><input type="tel" id="f-tel" placeholder="Telefono" inputmode="tel"/></div>
         <div class="field"><label>Cedula</label><input type="text" id="f-ced" placeholder="Cedula" inputmode="numeric"/></div>
-        <div id="f-comp-wrap" style="display:none;">
-          <div class="divider">Comprobante de pago</div>
-          <div class="field">
-            <input type="file" id="f-comp" accept="image/*,.pdf"/>
-            <div class="file-note">JPG · PNG · PDF — Max 5 MB</div>
-          </div>
-        </div>
         <div style="display:flex;gap:8px;margin-top:4px;">
           <button class="btn btn-outline" onclick="showView('v-opciones')" style="width:auto;padding:12px 18px;">Atras</button>
           <button class="btn btn-gold" id="fBtn" onclick="submitForm()">
@@ -454,7 +477,7 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
       <div id="v-cancel-confirm" style="display:none;">
         <p class="confirm-q">Confirmas que deseas <strong style="color:var(--r-tx)">cancelar</strong> la boleta <strong id="mNumCancel">—</strong>?</p>
         <div style="display:flex;gap:8px;">
-          <button class="btn btn-outline" onclick="showView('v-opciones')">No, volver</button>
+          <button class="btn btn-outline" onclick="backFromCancel()">No, volver</button>
           <button class="btn btn-red" onclick="doCancelar()" id="cancelBtn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
             Si, Cancelar
@@ -513,18 +536,30 @@ header p{color:var(--muted);font-size:.75rem;margin-top:4px;letter-spacing:.04em
 <div id="toast"></div>
 
 <script>
-const GAS = 'https://script.google.com/macros/s/AKfycbyrg4VOL2bnhgTZqEmL4LC2WDlNXRvx4E8OgazxrFuGbgJf3RGb91W-rBXiaJzfnOJy/exec';
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  CONFIGURACION                                          ║
+   ║  Pega aqui la URL /exec de tu Apps Script deployment    ║
+   ╚══════════════════════════════════════════════════════════╝ */
+const GAS = 'https://script.google.com/macros/s/AKfycbz5DzYy-mTI71n_9g6eXsYTG2kD2i_HuqZDdMRYchwf_ACH6l2kgFsARG8wt_nrzGuR/exec';
+
+/* Tiempo entre refrescos automaticos (ms). 20s es buen balance. */
+const REFRESH_MS = 20000;
+
+/* ────────────────────────────────────────────────────────── */
 
 var tickets = [];
 var curNum  = null;
+var curTicket = null;
 var curMode = null; // 'apartar' | 'pagar'
+var refreshTimer = null;
+var lastFetchOk = true;
 
 /* ── UTILS ── */
 function $(id){return document.getElementById(id);}
 function show(id){$(id).style.display='';}
 function hide(id){$(id).style.display='none';}
 function showView(id){
-  ['v-opciones','v-form','v-cancel-confirm','v-ok-apartar','v-ok-pagar','v-ok-cancel']
+  ['v-opciones','v-info','v-form','v-cancel-confirm','v-ok-apartar','v-ok-pagar','v-ok-cancel']
     .forEach(function(v){hide(v);});
   show(id);
 }
@@ -539,27 +574,67 @@ function switchTab(id,btn){
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
   $(id).classList.add('active');btn.classList.add('active');
 }
-
-/* ── API ── */
-async function get(params){
-  var url=GAS+'?'+Object.keys(params).map(function(k){return k+'='+encodeURIComponent(params[k]);}).join('&');
-  var r=await fetch(url);return r.json();
+function setLive(ok){
+  lastFetchOk = ok;
+  var el=$('live'),txt=$('liveTxt');
+  if(ok){el.classList.remove('off');txt.textContent='Conectado · actualiza solo';}
+  else  {el.classList.add('off');txt.textContent='Sin conexion';}
 }
-async function post(body){
-  var r=await fetch(GAS,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+
+/* ── API ──
+   GET: sin headers especiales → no preflight.
+   POST: usamos text/plain a proposito para evitar el preflight CORS
+   que Apps Script no maneja. El body sigue siendo JSON. */
+async function apiGet(params){
+  var qs=Object.keys(params).map(function(k){return k+'='+encodeURIComponent(params[k]);}).join('&');
+  var r=await fetch(GAS+'?'+qs,{method:'GET',redirect:'follow'});
+  return r.json();
+}
+async function apiPost(body){
+  var r=await fetch(GAS,{
+    method:'POST',
+    redirect:'follow',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify(body)
+  });
   return r.json();
 }
 
 /* ── LOAD ── */
-async function load(){
+async function load(silencioso){
   try{
-    var d=await get({action:'getTickets'});
+    var d=await apiGet({action:'getTickets'});
     tickets=d.tickets||[];
     renderStats(tickets);renderGrid(tickets);
+    setLive(true);
   }catch(e){
-    $('grid').innerHTML='<div class="loader" style="color:var(--r-tx)">Sin conexion. Verifica la URL del script.</div>';
+    setLive(false);
+    if(!silencioso){
+      $('grid').innerHTML='<div class="loader" style="color:var(--r-tx)">Sin conexion. Verifica la URL del script.</div>';
+    }
   }
 }
+
+function manualRefresh(){
+  var b=$('refreshBtn');b.classList.add('spin');
+  load().then(function(){
+    setTimeout(function(){b.classList.remove('spin');},400);
+  });
+}
+
+function startAutoRefresh(){
+  stopAutoRefresh();
+  refreshTimer=setInterval(function(){
+    if($('overlay').classList.contains('open')) return; // no refrescar con modal abierto
+    load(true);
+  },REFRESH_MS);
+}
+function stopAutoRefresh(){if(refreshTimer){clearInterval(refreshTimer);refreshTimer=null;}}
+
+document.addEventListener('visibilitychange',function(){
+  if(document.hidden) stopAutoRefresh();
+  else {load(true);startAutoRefresh();}
+});
 
 /* ── STATS ── */
 function renderStats(tt){
@@ -584,7 +659,7 @@ function renderGrid(tt){
     el.className='ticket '+t.estado;
     el.id='tk-'+t.numero;
     el.innerHTML=t.numero+'<span class="ticket-badge">'+(lbl[t.estado]||t.estado)+'</span>';
-    if(t.estado==='DISPONIBLE') el.onclick=function(){openModal(t.numero);};
+    el.onclick=function(){openModal(t);};
     g.appendChild(el);
   });
 }
@@ -604,21 +679,50 @@ function highlight(){
 }
 
 /* ── MODAL ── */
-function openModal(num){
-  curNum=num;
-  $('mTitle').textContent='Ticket #'+num;
-  $('mSub').textContent='Selecciona una opcion';
-  $('mNumCancel').textContent='#'+num;
-  $('mNum').textContent='#'+num;
-  showView('v-opciones');
+function openModal(t){
+  curNum=t.numero;
+  curTicket=t;
+  $('mTitle').textContent='Ticket #'+t.numero;
+  $('mNumCancel').textContent='#'+t.numero;
+  $('mNum').textContent='#'+t.numero;
+
+  if(t.estado==='DISPONIBLE'){
+    $('mSub').textContent='Selecciona una opcion';
+    showView('v-opciones');
+  } else {
+    $('mSub').textContent='Estado: '+t.estado;
+    renderInfo(t);
+    showView('v-info');
+  }
   $('overlay').classList.add('open');
 }
+
+function renderInfo(t){
+  var html=
+    '<div class="info-row"><span class="k">Estado</span><span class="v"><span class="badge '+t.estado+'">'+t.estado+'</span></span></div>'+
+    '<div class="info-row"><span class="k">Comprador</span><span class="v">'+(t.comprador||'—')+'</span></div>'+
+    '<div class="info-row"><span class="k">Telefono</span><span class="v">'+(t.telefono||'—')+'</span></div>'+
+    '<div class="info-row"><span class="k">Cedula</span><span class="v">'+(t.cedula||'—')+'</span></div>';
+  if(t.desprendible){
+    html+='<div class="info-row"><span class="k">Comprobante</span><span class="v"><a href="'+t.desprendible+'" target="_blank" style="color:var(--p-tx);">Ver</a></span></div>';
+  }
+  $('infoCard').innerHTML=html;
+
+  // Si ya esta cancelado, ocultar el boton de cancelar
+  if(t.estado==='CANCELADO'){hide('btnCancelarInfo');} else {show('btnCancelarInfo');}
+}
+
 function closeModal(){
   $('overlay').classList.remove('open');
-  curNum=null;curMode=null;
-  load();
+  curNum=null;curMode=null;curTicket=null;
+  load(true);
 }
 function bgClick(e){if(e.target===$('overlay'))closeModal();}
+
+function backFromCancel(){
+  if(curTicket && curTicket.estado!=='DISPONIBLE') showView('v-info');
+  else showView('v-opciones');
+}
 
 /* ── FORM ── */
 function showForm(mode){
@@ -627,7 +731,6 @@ function showForm(mode){
     ?'Completa tus datos para comprar y pagar la boleta'
     :'Completa tus datos para apartar la boleta sin pago inmediato';
   $('f-nombre').value='';$('f-tel').value='';$('f-ced').value='';
-  hide('f-comp-wrap');
   $('fBtn').textContent='Confirmar';$('fBtn').disabled=false;
   showView('v-form');
 }
@@ -638,21 +741,33 @@ async function submitForm(){
   var ced=$('f-ced').value.trim();
   if(!nombre||!tel||!ced){toast('Completa todos los campos','err');return;}
   var btn=$('fBtn');btn.disabled=true;btn.textContent='Guardando…';
-  var d=await post({action:curMode,numero:curNum,comprador:nombre,telefono:tel,cedula:ced});
-  btn.disabled=false;btn.textContent='Confirmar';
-  if(d.error){toast(d.error,'err');return;}
-  if(curMode==='pagar'){showView('v-ok-pagar');}
-  else{showView('v-ok-apartar');}
+  try{
+    var d=await apiPost({action:curMode,numero:curNum,comprador:nombre,telefono:tel,cedula:ced});
+    btn.disabled=false;btn.textContent='Confirmar';
+    if(d.error){toast(d.error,'err');return;}
+    if(curMode==='pagar'){showView('v-ok-pagar');}
+    else{showView('v-ok-apartar');}
+    load(true);
+  }catch(e){
+    btn.disabled=false;btn.textContent='Confirmar';
+    toast('Error de conexion','err');
+  }
 }
 
 /* ── CANCELAR ── */
 function showConfirmCancel(){showView('v-cancel-confirm');}
 async function doCancelar(){
   var btn=$('cancelBtn');btn.disabled=true;btn.textContent='Cancelando…';
-  var d=await post({action:'cancelar',numero:curNum});
-  btn.disabled=false;btn.textContent='Si, Cancelar';
-  if(d.error){toast(d.error,'err');return;}
-  showView('v-ok-cancel');
+  try{
+    var d=await apiPost({action:'cancelar',numero:curNum});
+    btn.disabled=false;btn.textContent='Si, Cancelar';
+    if(d.error){toast(d.error,'err');return;}
+    showView('v-ok-cancel');
+    load(true);
+  }catch(e){
+    btn.disabled=false;btn.textContent='Si, Cancelar';
+    toast('Error de conexion','err');
+  }
 }
 
 /* ── QUERY ── */
@@ -661,7 +776,7 @@ async function doQuery(){
   if(!n){toast('Ingresa un numero','err');return;}
   var rb=$('resultBox');rb.classList.remove('show');
   try{
-    var d=await get({action:'query',numero:n});
+    var d=await apiGet({action:'query',numero:n});
     if(d.error){toast(d.error,'err');return;}
     var t=d.ticket;
     $('r-n').textContent=t.numero;
@@ -688,20 +803,26 @@ async function subirComprobante(){
   var reader=new FileReader();
   reader.onload=async function(ev){
     var b64=ev.target.result.split(',')[1];
-    var d=await post({action:'comprobante',numero:num,base64:b64,mimeType:file.type,fileName:file.name});
-    btn.disabled=false;btn.textContent='Cargar Comprobante';
-    if(d.error){toast(d.error,'err');return;}
-    toast('Comprobante cargado correctamente');
-    $('compUrl').href=d.url;$('compRow').style.display='';
-    $('uploadBox').style.display='none';
-    $('r-e').innerHTML='<span class="badge PAGADO">PAGADO</span>';
+    try{
+      var d=await apiPost({action:'comprobante',numero:num,base64:b64,mimeType:file.type,fileName:file.name});
+      btn.disabled=false;btn.textContent='Cargar Comprobante';
+      if(d.error){toast(d.error,'err');return;}
+      toast('Comprobante cargado correctamente');
+      $('compUrl').href=d.url;$('compRow').style.display='';
+      $('uploadBox').style.display='none';
+      $('r-e').innerHTML='<span class="badge PAGADO">PAGADO</span>';
+      load(true);
+    }catch(e){
+      btn.disabled=false;btn.textContent='Cargar Comprobante';
+      toast('Error subiendo el comprobante','err');
+    }
   };
   reader.readAsDataURL(file);
 }
 
 /* ── INIT ── */
 load();
-setInterval(load,60000);
+startAutoRefresh();
 </script>
 </body>
 </html>
